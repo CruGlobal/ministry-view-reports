@@ -23,6 +23,11 @@
   </form>
   <div class="row">
     <div class="col-xs-12">
+      <div google-chart chart="main.chartObject"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
       <div class="table-responsive">
         <table class="table table-striped">
           <thead>
@@ -35,9 +40,9 @@
             </th>
           </tr>
           </thead>
-          <tbody table-group name="'Income'" data="main.data.income"></tbody>
-          <tbody table-group name="'Expenses'" data="main.data.expenses"></tbody>
-          <tbody table-group name="'Balance'" data="main.data.balance"></tbody>
+          <tbody table-group data="main.data.income"></tbody>
+          <tbody table-group data="main.data.expenses"></tbody>
+          <tbody table-group data="main.data.balance"></tbody>
         </table>
       </div>
     </div>

@@ -1,6 +1,6 @@
-<tr>
+<tr ng-repeat="(groupName, values) in group.data track by $index">
   <td>
-    {{ group.name }}
+    {{ groupName }}
   </td>
-  <td ng-repeat="value in group.data.totals">{{ value }}</td>
+  <td ng-repeat="value in values track by $index">{{ value }}</td>
 </tr>

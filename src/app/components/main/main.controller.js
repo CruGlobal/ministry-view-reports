@@ -53,15 +53,266 @@
         'Sep 15'
       ],
       income: {
-        totals: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+        Income: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        'Europe Income': [2, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        'GA NMF Charge': [3, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
       },
       expenses: {
-        totals: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+        Expenses: [4, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        'Conf Attended': [2, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        'Employers NI': [3, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
       },
       balance: {
-        totals: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+        Balance: [5, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        'Something else': [2, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
       }
     };
 
+    this.chartObject = {
+      "type": "LineChart",
+      "displayed": true,
+      "data": {
+        "cols": [
+          {
+            "label": "Month",
+            "type": "string",
+          },
+          {
+            "label": "Income",
+            "type": "number",
+          },
+          {
+            "label": "Expenses",
+            "type": "number",
+          },
+          {
+            "label": "Balance",
+            "type": "number",
+          },
+        ],
+        "rows": [
+          {
+            "c": [
+              {
+                "v": "Sep 14"
+              },
+              {
+                "v": 20000 * Math.random(),
+              },
+              {
+                "v": 20000 * Math.random(),
+              },
+              {
+                "v": 20000 * Math.random(),
+              }
+            ]
+          },
+          {
+            "c": [
+              {
+                "v": "Oct 14"
+              },
+              {
+                "v": 20000 * Math.random(),
+              },
+              {
+                "v": 20000 * Math.random(),
+              },
+              {
+                "v": 20000 * Math.random(),
+              }
+            ]
+          },
+          {
+            "c": [
+              {
+                "v": "Nov 14"
+              },
+              {
+                "v": 20000 * Math.random(),
+              },
+              {
+                "v": 20000 * Math.random(),
+              },
+              {
+                "v": 20000 * Math.random(),
+              }
+            ]
+          },
+          {
+            "c": [
+              {
+                "v": "Dec 14"
+              },
+              {
+                "v": 20000 * Math.random(),
+              },
+              {
+                "v": 20000 * Math.random(),
+              },
+              {
+                "v": 20000 * Math.random(),
+              }
+            ]
+          },
+          {
+            "c": [
+              {
+                "v": "Jan 15"
+              },
+              {
+                "v": 20000 * Math.random(),
+              },
+              {
+                "v": 20000 * Math.random(),
+              },
+              {
+                "v": 20000 * Math.random(),
+              }
+            ]
+          },
+          {
+            "c": [
+              {
+                "v": "Feb 15"
+              },
+              {
+                "v": 20000 * Math.random(),
+              },
+              {
+                "v": 20000 * Math.random(),
+              },
+              {
+                "v": 20000 * Math.random(),
+              }
+            ]
+          },
+          {
+            "c": [
+              {
+                "v": "Mar 15"
+              },
+              {
+                "v": 20000 * Math.random(),
+              },
+              {
+                "v": 20000 * Math.random(),
+              },
+              {
+                "v": 20000 * Math.random(),
+              }
+            ]
+          },
+          {
+            "c": [
+              {
+                "v": "Apr 15"
+              },
+              {
+                "v": 20000 * Math.random(),
+              },
+              {
+                "v": 20000 * Math.random(),
+              },
+              {
+                "v": 20000 * Math.random(),
+              }
+            ]
+          },
+          {
+            "c": [
+              {
+                "v": "May 15"
+              },
+              {
+                "v": 20000 * Math.random(),
+              },
+              {
+                "v": 20000 * Math.random(),
+              },
+              {
+                "v": 20000 * Math.random(),
+              }
+            ]
+          },
+          {
+            "c": [
+              {
+                "v": "Jun 15"
+              },
+              {
+                "v": 20000 * Math.random(),
+              },
+              {
+                "v": 20000 * Math.random(),
+              },
+              {
+                "v": 20000 * Math.random(),
+              }
+            ]
+          },
+          {
+            "c": [
+              {
+                "v": "Jul 15"
+              },
+              {
+                "v": 20000 * Math.random(),
+              },
+              {
+                "v": 20000 * Math.random(),
+              },
+              {
+                "v": 20000 * Math.random(),
+              }
+            ]
+          },
+          {
+            "c": [
+              {
+                "v": "Aug 15"
+              },
+              {
+                "v": 20000 * Math.random(),
+              },
+              {
+                "v": 20000 * Math.random(),
+              },
+              {
+                "v": 20000 * Math.random(),
+              }
+            ]
+          },
+          {
+            "c": [
+              {
+                "v": "Sep 15"
+              },
+              {
+                "v": 20000 * Math.random(),
+              },
+              {
+                "v": 20000 * Math.random(),
+              },
+              {
+                "v": 20000 * Math.random(),
+              }
+            ]
+          },
+
+
+        ]
+      },
+      "options": {
+        height: 400,
+        legend: {position: 'top'},
+        pointSize: 6,
+        vAxis: {
+          gridlines: {
+            count: 10
+          }
+        }
+      }
+    };
   }
 })();

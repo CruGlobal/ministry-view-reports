@@ -3,24 +3,26 @@
 
   angular
     .module('globalStaffAccountReport')
-    .directive('tableGroup', menu);
+    .directive('tableGroup', tableGroup);
 
   /** @ngInject */
-  function menu() {
+  function tableGroup() {
     var directive = {
       restrict: 'A',
       templateUrl: '/app/components/tableGroup/tableGroup.html',
-      controller: ['$attrs', '$scope', TableGroupController],
+      controller: [TableGroupController],
       controllerAs: 'group',
+      scope: {
+        data: '='
+      },
       bindToController: true
     };
 
     return directive;
 
     /** @ngInject */
-    function TableGroupController($attrs, $scope) {
-      this.name = $scope.$eval($attrs.name);
-      this.data = $scope.$eval($attrs.data);
+    function TableGroupController() {
+
     }
   }
 

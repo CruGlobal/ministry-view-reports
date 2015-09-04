@@ -1,0 +1,9 @@
+tbody[table-group]{
+  > tr:first-child {
+    background-color: #3BCDB8;
+    color: #FFF
+  }
+  :not(:first-child) > td:first-child{
+    padding-left: 1.5em;
+  }
+}
