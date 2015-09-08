@@ -22,6 +22,7 @@
 
     /** @ngInject */
     function TableGroupController() {
+      this.isCollapsed = true;
 
     }
   }

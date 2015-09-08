@@ -75,19 +75,19 @@
         "cols": [
           {
             "label": "Month",
-            "type": "string",
+            "type": "string"
           },
           {
             "label": "Income",
-            "type": "number",
+            "type": "number"
           },
           {
             "label": "Expenses",
-            "type": "number",
+            "type": "number"
           },
           {
             "label": "Balance",
-            "type": "number",
+            "type": "number"
           },
         ],
         "rows": [

@@ -2,6 +2,6 @@
   'use strict';
 
   angular
-    .module('ministryViewReports', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ui.router', 'googlechart']);
+    .module('ministryViewReports', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ui.router', 'ui.bootstrap', 'googlechart']);
 
 })();

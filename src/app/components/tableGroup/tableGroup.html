@@ -1,4 +1,4 @@
-<tr ng-repeat="(groupName, values) in group.data track by $index">
+<tr ng-repeat="(groupName, values) in group.data track by $index" ng-click="$first && (group.isCollapsed = !group.isCollapsed)" collapse="!$first && group.isCollapsed">
   <td>
     {{ groupName }}
   </td>
