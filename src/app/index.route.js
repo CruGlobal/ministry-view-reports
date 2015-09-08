@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('globalStaffAccountReport')
+    .module('ministryViewReports')
     .config(routeConfig);
 
   /** @ngInject */

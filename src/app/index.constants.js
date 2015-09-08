@@ -3,7 +3,7 @@
   'use strict';
 
   angular
-    .module('globalStaffAccountReport')
+    .module('ministryViewReports')
     .constant('moment', moment);
 
 })();
