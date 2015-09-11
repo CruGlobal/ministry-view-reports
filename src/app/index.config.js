@@ -6,9 +6,11 @@
     .config(config);
 
   /** @ngInject */
-  function config($logProvider) {
+  function config($logProvider, RestangularProvider) {
     // Enable log
     $logProvider.debugEnabled(true);
+
+    RestangularProvider.setBaseUrl('/json/ministry_view');
   }
 
 })();

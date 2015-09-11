@@ -8,7 +8,8 @@
       'ngTouch',
       'ngSanitize',
       'ui.bootstrap',
-      'googlechart'
+      'googlechart',
+      'restangular'
     ]);
 
 })();

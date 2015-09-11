@@ -3,14 +3,12 @@
 
   angular
     .module('ministryViewReports')
-    .factory('countries', ["$http",
-      function ($http){
+    .factory('countries', ["Restangular",
+      function (Restangular){
         var factory = {};
 
         factory.getCountries = function(){
-          return $http.get('json/ministry_view/countries.json').then(function(response){
-            return response.data;
-          });
+          return Restangular.all('countries.json').getList();
         };
 
         return factory;
