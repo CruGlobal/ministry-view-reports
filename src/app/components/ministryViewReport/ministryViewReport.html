@@ -1,4 +1,4 @@
-<div class="container">
+<pre>{{mvr.profiles | json}}</pre><div class="container">
   <form class="form-horizontal">
     <div class="form-group">
       <div class="col-sm-4">
@@ -10,13 +10,13 @@
       <div class="col-sm-4">
         <label for="profile" class="control-label">Profile</label>
         <select class="form-control" id="profile" ng-model="mvr.profile">
-          <option ng-repeat="option in mvr.dropdowns.profile" value="{{option.id}}">{{option.name}}</option>
+          <option ng-repeat="option in mvr.profiles" value="{{$index}}">{{option.description}}</option>
         </select>
       </div>
       <div class="col-sm-4">
         <label for="account" class="control-label">Account</label>
         <select class="form-control" id="account" ng-model="mvr.account">
-          <option ng-repeat="option in mvr.dropdowns.account" value="{{option.id}}">{{option.name}}</option>
+          <option ng-repeat="option in mvr.profiles[mvr.profile].financial_accounts.financial_account_info" value="{{option.code}}">{{option.description}}</option>
         </select>
       </div>
     </div>

@@ -10,7 +10,7 @@
     var directive = {
       restrict: 'E',
       templateUrl: '/app/components/ministryViewReport/ministryViewReport.html',
-      controller: ['countries', MinistryViewReportController],
+      controller: ['countries', 'profiles', MinistryViewReportController],
       controllerAs: 'mvr',
       scope: {
         color: '='
@@ -21,11 +21,16 @@
     return directive;
 
     /** @ngInject */
-    function MinistryViewReportController(countries) {
+    function MinistryViewReportController(countries, profiles) {
       var vm = this;
 
       countries.getCountries().then(function(countries){
         vm.countries = countries;
+        vm.country = vm.countries[0].portal_uri;
+      });
+      profiles.getProfiles(vm.country).then(function(profiles){
+        vm.profiles = profiles;
+        //TODO: choose default profile where profile.code == null
       });
 
       this.color = this.color || {};
