@@ -4,7 +4,7 @@
       <div class="col-sm-4">
         <label for="country" class="control-label">Country</label>
         <select class="form-control" id="country" ng-model="mvr.country">
-          <option ng-repeat="option in mvr.dropdowns.country" value="{{option.id}}">{{option.name}}</option>
+          <option ng-repeat="option in mvr.countries" value="{{option.portal_uri}}">{{option.portal_name}}</option>
         </select>
       </div>
       <div class="col-sm-4">

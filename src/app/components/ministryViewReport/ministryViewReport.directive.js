@@ -10,7 +10,7 @@
     var directive = {
       restrict: 'E',
       templateUrl: '/app/components/ministryViewReport/ministryViewReport.html',
-      controller: [MinistryViewReportController],
+      controller: ['countries', MinistryViewReportController],
       controllerAs: 'mvr',
       scope: {
         color: '='
@@ -21,22 +21,19 @@
     return directive;
 
     /** @ngInject */
-    function MinistryViewReportController() {
+    function MinistryViewReportController(countries) {
+      var vm = this;
+      
+      countries.getCountries().then(function(countries){
+        vm.countries = countries;
+      });
+
       this.color = this.color || {};
       this.color.income = this.color.income || '#3366cc';
       this.color.expenses = this.color.expenses || '#dc3912';
       this.color.balance = this.color.balance || '#ff9900';
 
       this.dropdowns = {
-        country: [
-          {
-            id: 'us',
-            name: "United States"
-          }, {
-            id: 'ca',
-            name: "Canada"
-          }
-        ],
         profile: [
           {
             id: '1',
