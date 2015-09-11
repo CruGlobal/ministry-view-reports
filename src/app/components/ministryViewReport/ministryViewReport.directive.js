@@ -23,7 +23,7 @@
     /** @ngInject */
     function MinistryViewReportController(countries) {
       var vm = this;
-      
+
       countries.getCountries().then(function(countries){
         vm.countries = countries;
       });

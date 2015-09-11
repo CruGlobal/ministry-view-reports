@@ -7,7 +7,6 @@
       'ngCookies',
       'ngTouch',
       'ngSanitize',
-      'ui.router',
       'ui.bootstrap',
       'googlechart'
     ]);
