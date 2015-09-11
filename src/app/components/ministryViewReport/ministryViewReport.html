@@ -1,0 +1,50 @@
+<div class="container">
+  <form class="form-horizontal">
+    <div class="form-group">
+      <div class="col-sm-4">
+        <label for="country" class="control-label">Country</label>
+        <select class="form-control" id="country" ng-model="mvr.country">
+          <option ng-repeat="option in mvr.dropdowns.country" value="{{option.id}}">{{option.name}}</option>
+        </select>
+      </div>
+      <div class="col-sm-4">
+        <label for="profile" class="control-label">Profile</label>
+        <select class="form-control" id="profile" ng-model="mvr.profile">
+          <option ng-repeat="option in mvr.dropdowns.profile" value="{{option.id}}">{{option.name}}</option>
+        </select>
+      </div>
+      <div class="col-sm-4">
+        <label for="account" class="control-label">Account</label>
+        <select class="form-control" id="account" ng-model="mvr.account">
+          <option ng-repeat="option in mvr.dropdowns.account" value="{{option.id}}">{{option.name}}</option>
+        </select>
+      </div>
+    </div>
+  </form>
+  <div class="row">
+    <div class="col-xs-12">
+      <div google-chart chart="mvr.chartObject"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>
+              Category
+            </th>
+            <th ng-repeat="month in mvr.data.months">
+              {{ month }}
+            </th>
+          </tr>
+          </thead>
+          <tbody table-group data="mvr.data.income" color="mvr.color.income"></tbody>
+          <tbody table-group data="mvr.data.expenses" color="mvr.color.expenses"></tbody>
+          <tbody table-group data="mvr.data.balance" color="mvr.color.balance"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -13,7 +13,8 @@
       controller: [TableGroupController],
       controllerAs: 'group',
       scope: {
-        data: '='
+        data: '=',
+        color: '='
       },
       bindToController: true
     };

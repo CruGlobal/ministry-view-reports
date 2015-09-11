@@ -1,6 +1,8 @@
-<tr ng-repeat="(groupName, values) in group.data track by $index" ng-click="$first && (group.isCollapsed = !group.isCollapsed)" collapse="!$first && group.isCollapsed">
+<tr ng-repeat="(groupName, values) in group.data track by $index" ng-click="$first && (group.isCollapsed = !group.isCollapsed)" collapse="!$first && group.isCollapsed" ng-style="{'background-color': $first ? group.color : '' }">
   <td>
-    {{ groupName }}
+    {{ groupName }} {{ mvr.color | json }}
   </td>
-  <td ng-repeat="value in values track by $index">{{ value }}</td>
+  <td ng-repeat="value in values track by $index">
+    {{ value }}
+  </td>
 </tr>
