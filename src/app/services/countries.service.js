@@ -3,15 +3,16 @@
 
   angular
     .module('ministryViewReports')
-    .factory('countries', ["Restangular",
-      function (Restangular){
-        var factory = {};
+    .factory('countries', countryService);
 
-        factory.getCountries = function(){
-          return Restangular.all('countries.json').getList();
-        };
+  /** @ngInject */
+  function countryService(Restangular){
+    var factory = {};
 
-        return factory;
-      }
-    ]);
+    factory.getCountries = function(){
+      return Restangular.all('countries.json').getList();
+    };
+
+    return factory;
+  }
 })();

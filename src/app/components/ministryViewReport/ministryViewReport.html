@@ -1,22 +1,23 @@
-<pre>{{mvr.profiles | json}}</pre><div class="container">
+<div class="container">
   <form class="form-horizontal">
     <div class="form-group">
       <div class="col-sm-4">
         <label for="country" class="control-label">Country</label>
-        <select class="form-control" id="country" ng-model="mvr.country">
-          <option ng-repeat="option in mvr.countries" value="{{option.portal_uri}}">{{option.portal_name}}</option>
+        <select class="form-control" id="country" ng-model="mvr.country"
+          ng-options="option.portal_uri as option.portal_name for option in mvr.countries">
         </select>
       </div>
       <div class="col-sm-4">
         <label for="profile" class="control-label">Profile</label>
-        <select class="form-control" id="profile" ng-model="mvr.profile">
-          <option ng-repeat="option in mvr.profiles" value="{{$index}}">{{option.description}}</option>
+        <select class="form-control" id="profile" ng-model="mvr.profile"
+          ng-options="option.code as option.description for option in mvr.profiles">
         </select>
       </div>
       <div class="col-sm-4">
         <label for="account" class="control-label">Account</label>
-        <select class="form-control" id="account" ng-model="mvr.account">
-          <option ng-repeat="option in mvr.profiles[mvr.profile].financial_accounts.financial_account_info" value="{{option.code}}">{{option.description}}</option>
+        <select class="form-control" id="account" ng-model="mvr.account"
+          ng-options="option.code as option.description for option in (mvr.profiles | filter: {code: (mvr.profile)})[0].financial_accounts.financial_account_info">
+          <option value="">All</option>
         </select>
       </div>
     </div>

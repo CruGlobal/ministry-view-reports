@@ -10,7 +10,7 @@
     var directive = {
       restrict: 'E',
       templateUrl: '/app/components/ministryViewReport/ministryViewReport.html',
-      controller: ['countries', 'profiles', MinistryViewReportController],
+      controller: MinistryViewReportController,
       controllerAs: 'mvr',
       scope: {
         color: '='
@@ -23,41 +23,27 @@
     /** @ngInject */
     function MinistryViewReportController(countries, profiles) {
       var vm = this;
+      vm.color = vm.color || {};
+      vm.color.income = vm.color.income || '#3366cc';
+      vm.color.expenses = vm.color.expenses || '#dc3912';
+      vm.color.balance = vm.color.balance || '#ff9900';
 
-      countries.getCountries().then(function(countries){
-        vm.countries = countries;
-        vm.country = vm.countries[0].portal_uri;
-      });
-      profiles.getProfiles(vm.country).then(function(profiles){
-        vm.profiles = profiles;
-        //TODO: choose default profile where profile.code == null
-      });
+      activate();
 
-      this.color = this.color || {};
-      this.color.income = this.color.income || '#3366cc';
-      this.color.expenses = this.color.expenses || '#dc3912';
-      this.color.balance = this.color.balance || '#ff9900';
+      function activate() {
+        countries.getCountries().then(function (countries) {
+          vm.countries = countries;
+          vm.country = vm.countries[0].portal_uri; //Default to first country
+        });
 
-      this.dropdowns = {
-        profile: [
-          {
-            id: '1',
-            name: "1st"
-          }, {
-            id: '2',
-            name: "2nd"
-          }
-        ],
-        account: [
-          {
-            id: '1',
-            name: "1st"
-          }, {
-            id: '2',
-            name: "2nd"
-          }
-        ]
-      };
+        profiles.getProfiles(vm.country).then(function (profiles) {
+          vm.profiles = profiles;
+          vm.profile = null; //Default to profile where code is null
+          vm.account = null; //Default to all accounts
+        });
+      }
+
+      //TODO: Remove these objects once loaded from json api
       this.data = {
         months: [
           'Sep 14',

@@ -10,7 +10,7 @@
     var directive = {
       restrict: 'A',
       templateUrl: '/app/components/tableGroup/tableGroup.html',
-      controller: [TableGroupController],
+      controller: TableGroupController,
       controllerAs: 'group',
       scope: {
         data: '=',
