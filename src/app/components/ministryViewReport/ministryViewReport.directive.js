@@ -21,7 +21,7 @@
     return directive;
 
     /** @ngInject */
-    function MinistryViewReportController(countries, profiles) {
+    function MinistryViewReportController(countries, profiles, transactions) {
       var vm = this;
       vm.color = vm.color || {};
       vm.color.income = vm.color.income || '#3366cc';
@@ -40,6 +40,10 @@
           vm.profiles = profiles;
           vm.profile = null; //Default to profile where code is null
           vm.account = null; //Default to all accounts
+        });
+
+        transactions.getTransactions(vm.country, vm.profile, vm.account).then(function (transactions) {
+          vm.transactions = transactions;
         });
       }
 
