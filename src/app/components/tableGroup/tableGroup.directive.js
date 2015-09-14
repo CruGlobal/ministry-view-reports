@@ -13,7 +13,9 @@
       controller: TableGroupController,
       controllerAs: 'group',
       scope: {
+        name: '@',
         data: '=',
+        totals: '=',
         color: '='
       },
       bindToController: true

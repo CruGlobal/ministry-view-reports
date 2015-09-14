@@ -1,0 +1,7 @@
+table.mvr-table{
+  tr,td{
+    :not(:first-child){
+      text-align: right;
+    }
+  }
+}

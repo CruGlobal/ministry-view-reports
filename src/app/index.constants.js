@@ -4,6 +4,7 @@
 
   angular
     .module('ministryViewReports')
-    .constant('moment', moment);
+    .constant('moment', moment)
+    .constant('_', window._);
 
 })();

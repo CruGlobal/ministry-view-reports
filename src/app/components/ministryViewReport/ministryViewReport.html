@@ -1,4 +1,4 @@
-<pre>{{mvr.transactions | json}}</pre>
+<pre>{{mvr.data | json}}</pre>
 <div class="container">
   <form class="form-horizontal">
     <div class="form-group">
@@ -31,20 +31,20 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="table-responsive">
-        <table class="table table-striped">
+        <table class="table table-striped mvr-table">
           <thead>
           <tr>
             <th>
               Category
             </th>
-            <th ng-repeat="month in mvr.data.months">
-              {{ month }}
+            <th ng-repeat="date in mvr.transactions.allDates">
+              {{ date.friendly }}
             </th>
           </tr>
           </thead>
-          <tbody table-group data="mvr.data.income" color="mvr.color.income"></tbody>
-          <tbody table-group data="mvr.data.expenses" color="mvr.color.expenses"></tbody>
-          <tbody table-group data="mvr.data.balance" color="mvr.color.balance"></tbody>
+          <tbody table-group name="Income" data="mvr.data.income" totals="mvr.data.incomeTotal" color="mvr.color.income"></tbody>
+          <tbody table-group name="Expenses" data="mvr.data.expenses" totals="mvr.data.expensesTotal" color="mvr.color.expenses"></tbody>
+          <tbody table-group name="Balances" data="mvr.data.balance" totals="mvr.data.balanceTotal" color="mvr.color.balance"></tbody>
         </table>
       </div>
     </div>
