@@ -24,146 +24,115 @@
         "financial_transactions": {
           "financial_transaction": [
             {
-              "code": "2050317",
-              "transaction_date": "2014-09-30T00:00:00.000+00:00",
-              "amount": "939.5100",
-              "description": "US / J Vellacott TRM 1409",
-              "reference": null,
-              "fiscal_year": "2014",
-              "fiscal_period": "9",
-              "financial_account_code": "VJ11",
-              "gl_account_code": "5099",
-              "gl_account_description": "Int'l Income",
-              "gl_account_category": null,
-              "gl_account_is_income": true,
-              "properties": null
+              "code":"2050317",
+              "transaction_date":"2014-09-30T00:00:00.000+00:00",
+              "amount":"939.5100",
+              "description":"US / J Vellacott TRM 1409",
+              "reference":null,
+              "fiscal_year":"2014",
+              "fiscal_period":"9",
+              "financial_account_code":"VJ11",
+              "gl_account_code":"5099",
+              "gl_account_description":"Int'l Income",
+              "gl_account_category":null,
+              "gl_account_is_income":true,
+              "properties":null
             },
             {
-              "code": "2050349",
-              "transaction_date": "2014-09-30T00:00:00.000+00:00",
-              "amount": "35.4300",
-              "description": "Jung / Vellacotts TRM 1409",
-              "reference": null,
-              "fiscal_year": "2014",
-              "fiscal_period": "9",
-              "financial_account_code": "VJ11",
-              "gl_account_code": "5091",
-              "gl_account_description": "Europe Income",
-              "gl_account_category": null,
-              "gl_account_is_income": true,
-              "properties": null
+              "code":"2050349",
+              "transaction_date":"2014-09-30T00:00:00.000+00:00",
+              "amount":"35.4300",
+              "description":"Jung / Vellacotts TRM 1409",
+              "reference":null,
+              "fiscal_year":"2014",
+              "fiscal_period":"9",
+              "financial_account_code":"VJ11",
+              "gl_account_code":"5091",
+              "gl_account_description":"Europe Income",
+              "gl_account_category":null,
+              "gl_account_is_income":true,
+              "properties":null
             },
             {
-              "code": "2075290",
-              "transaction_date": "2014-09-30T00:00:00.000+00:00",
-              "amount": "-582.1800",
-              "description": " Remove negative balance from expense account",
-              "reference": null,
-              "fiscal_year": "2014",
-              "fiscal_period": "9",
-              "financial_account_code": "VJ11",
-              "gl_account_code": "9011",
-              "gl_account_description": "Intra A/C Exp T/f",
-              "gl_account_category": null,
-              "gl_account_is_income": false,
-              "properties": null
+              "code":"2075290",
+              "transaction_date":"2014-09-30T00:00:00.000+00:00",
+              "amount":"-582.1800",
+              "description":" Remove negative balance from expense account",
+              "reference":null,
+              "fiscal_year":"2014",
+              "fiscal_period":"9",
+              "financial_account_code":"VJ11",
+              "gl_account_code":"9011",
+              "gl_account_description":"Intra A/C Exp T/f",
+              "gl_account_category":null,
+              "gl_account_is_income":false,
+              "properties":null
             },
             {
-              "code": "2086711",
-              "transaction_date": "2014-10-01T00:00:00.000+00:00",
-              "amount": "40.0000",
-              "description": "Atkins / Vellacott Atkins A&A Staff Transfers",
-              "reference": null,
-              "fiscal_year": "2014",
-              "fiscal_period": "10",
-              "financial_account_code": "VJ11",
-              "gl_account_code": "8010",
-              "gl_account_description": "Inc Transfers",
-              "gl_account_category": null,
-              "gl_account_is_income": true,
-              "properties": null
+              "code":"2086711",
+              "transaction_date":"2014-10-01T00:00:00.000+00:00",
+              "amount":"40.0000",
+              "description":"Atkins / Vellacott Atkins A&A Staff Transfers",
+              "reference":null,
+              "fiscal_year":"2014",
+              "fiscal_period":"10",
+              "financial_account_code":"VJ11",
+              "gl_account_code":"8010",
+              "gl_account_description":"Inc Transfers",
+              "gl_account_category":null,
+              "gl_account_is_income":true,
+              "properties":null
             },
             {
-              "code": "2087216",
-              "transaction_date": "2014-10-24T00:00:00.000+00:00",
-              "amount": "-64.0300",
-              "description": "Employers NIC on BASIC for Vellacott Jonathan - Pe",
-              "reference": null,
-              "fiscal_year": "2014",
-              "fiscal_period": "10",
-              "financial_account_code": "VJ11",
-              "gl_account_code": "7017",
-              "gl_account_description": "Employers NI",
-              "gl_account_category": null,
-              "gl_account_is_income": false,
-              "properties": null
+              "code":"2087216",
+              "transaction_date":"2014-10-24T00:00:00.000+00:00",
+              "amount":"-64.0300",
+              "description":"Employers NIC on BASIC for Vellacott Jonathan - Pe",
+              "reference":null,
+              "fiscal_year":"2014",
+              "fiscal_period":"10",
+              "financial_account_code":"VJ11",
+              "gl_account_code":"7017",
+              "gl_account_description":"Employers NI",
+              "gl_account_category":null,
+              "gl_account_is_income":false,
+              "properties":null
             },
             {
-              "code": "2087217",
-              "transaction_date": "2014-10-24T00:00:00.000+00:00",
-              "amount": "-25.1200",
-              "description": "Employers NIC on BASIC for Vellacott Chontelle L -",
-              "reference": null,
-              "fiscal_year": "2014",
-              "fiscal_period": "10",
-              "financial_account_code": "VJ11",
-              "gl_account_code": "7017",
-              "gl_account_description": "Employers NI",
-              "gl_account_category": null,
-              "gl_account_is_income": false,
-              "properties": null
+              "code":"2087217",
+              "transaction_date":"2014-10-24T00:00:00.000+00:00",
+              "amount":"-25.1200",
+              "description":"Employers NIC on BASIC for Vellacott Chontelle L -",
+              "reference":null,
+              "fiscal_year":"2014",
+              "fiscal_period":"10",
+              "financial_account_code":"VJ11",
+              "gl_account_code":"7017",
+              "gl_account_description":"Employers NI",
+              "gl_account_category":null,
+              "gl_account_is_income":false,
+              "properties":null
             },
             {
-              "code": "2087107",
-              "transaction_date": "2014-10-24T00:00:00.000+00:00",
-              "amount": "-845.0000",
-              "description": "BASIC for Vellacott Chontelle L - Period 7 Payroll",
-              "reference": null,
-              "fiscal_year": "2014",
-              "fiscal_period": "10",
-              "financial_account_code": "VJ11",
-              "gl_account_code": "7010",
-              "gl_account_description": "Salary",
-              "gl_account_category": null,
-              "gl_account_is_income": false,
-              "properties": null
+              "code":"2087107",
+              "transaction_date":"2014-10-24T00:00:00.000+00:00",
+              "amount":"-845.0000",
+              "description":"BASIC for Vellacott Chontelle L - Period 7 Payroll",
+              "reference":null,
+              "fiscal_year":"2014",
+              "fiscal_period":"10",
+              "financial_account_code":"VJ11",
+              "gl_account_code":"7010",
+              "gl_account_description":"Salary",
+              "gl_account_category":null,
+              "gl_account_is_income":false,
+              "properties":null
             }
           ]
         }
       };
       processedSampleData = {
         "income": {
-          "Int'l Income": {
-            "2014-08": {
-              "sum": 0
-            },
-            "2014-09": {
-              "sum": 939.51,
-              "transactions": [
-                {
-                  "code": "2050317",
-                  "transaction_date": "2014-09-30T00:00:00.000+00:00",
-                  "amount": "939.5100",
-                  "description": "US / J Vellacott TRM 1409",
-                  "reference": null,
-                  "fiscal_year": "2014",
-                  "fiscal_period": "9",
-                  "financial_account_code": "VJ11",
-                  "gl_account_code": "5099",
-                  "gl_account_description": "Int'l Income",
-                  "gl_account_category": null,
-                  "gl_account_is_income": true,
-                  "properties": null
-                }
-              ]
-            },
-            "2014-10": {
-              "sum": 0
-            },
-            "2014-11": {
-              "sum": 0
-            }
-          },
           "Europe Income": {
             "2014-08": {
               "sum": 0
@@ -225,29 +194,27 @@
             "2014-11": {
               "sum": 0
             }
-          }
-        },
-        "expenses": {
-          "Intra A/C Exp T/f": {
+          },
+          "Int'l Income": {
             "2014-08": {
               "sum": 0
             },
             "2014-09": {
-              "sum": 582.18,
+              "sum": 939.51,
               "transactions": [
                 {
-                  "code": "2075290",
+                  "code": "2050317",
                   "transaction_date": "2014-09-30T00:00:00.000+00:00",
-                  "amount": "-582.1800",
-                  "description": " Remove negative balance from expense account",
+                  "amount": "939.5100",
+                  "description": "US / J Vellacott TRM 1409",
                   "reference": null,
                   "fiscal_year": "2014",
                   "fiscal_period": "9",
                   "financial_account_code": "VJ11",
-                  "gl_account_code": "9011",
-                  "gl_account_description": "Intra A/C Exp T/f",
+                  "gl_account_code": "5099",
+                  "gl_account_description": "Int'l Income",
                   "gl_account_category": null,
-                  "gl_account_is_income": false,
+                  "gl_account_is_income": true,
                   "properties": null
                 }
               ]
@@ -258,7 +225,9 @@
             "2014-11": {
               "sum": 0
             }
-          },
+          }
+        },
+        "expenses": {
           "Employers NI": {
             "2014-08": {
               "sum": 0
@@ -267,7 +236,7 @@
               "sum": 0
             },
             "2014-10": {
-              "sum": 89.15,
+              "sum": -89.15,
               "transactions": [
                 {
                   "code": "2087216",
@@ -305,6 +274,37 @@
               "sum": 0
             }
           },
+          "Intra A/C Exp T/f": {
+            "2014-08": {
+              "sum": 0
+            },
+            "2014-09": {
+              "sum": -582.18,
+              "transactions": [
+                {
+                  "code": "2075290",
+                  "transaction_date": "2014-09-30T00:00:00.000+00:00",
+                  "amount": "-582.1800",
+                  "description": " Remove negative balance from expense account",
+                  "reference": null,
+                  "fiscal_year": "2014",
+                  "fiscal_period": "9",
+                  "financial_account_code": "VJ11",
+                  "gl_account_code": "9011",
+                  "gl_account_description": "Intra A/C Exp T/f",
+                  "gl_account_category": null,
+                  "gl_account_is_income": false,
+                  "properties": null
+                }
+              ]
+            },
+            "2014-10": {
+              "sum": 0
+            },
+            "2014-11": {
+              "sum": 0
+            }
+          },
           "Salary": {
             "2014-08": {
               "sum": 0
@@ -313,7 +313,7 @@
               "sum": 0
             },
             "2014-10": {
-              "sum": 845,
+              "sum": -845,
               "transactions": [
                 {
                   "code": "2087107",
@@ -345,8 +345,8 @@
         },
         "expensesTotal": {
           "2014-08": 0,
-          "2014-09": 582.18,
-          "2014-10": 934.15,
+          "2014-09": -582.18,
+          "2014-10": -934.15,
           "2014-11": 0
         }
       };
@@ -359,7 +359,7 @@
     describe('getParsedTransactions function', function(){
       it('should be run everything', function(){
         // for dates rely on overwritten _getDateTo and _getDateFrom above
-        $httpBackend.expectGET('/json/ministry_view/transactions.json?date_from=' + transactions._getDateFrom() + '&date_to=' + transactions._getDateTo() + '').respond(200, sampleData);
+        $httpBackend.expectGET('/ministry_view/transactions?date_from=' + transactions._getDateFrom() + '&date_to=' + transactions._getDateTo() + '').respond(200, sampleData);
         transactions.getParsedTransactions().then(function(data){
           expect(data).toEqual(processedSampleData);
         });
@@ -370,7 +370,7 @@
     describe('getTransactions function', function() {
       it('should request transactions from the server', function() {
         // for dates rely on overwritten _getDateTo and _getDateFrom above
-        $httpBackend.expectGET('/json/ministry_view/transactions.json?date_from=' + transactions._getDateFrom() + '&date_to=' + transactions._getDateTo() + '').respond(200, sampleData);
+        $httpBackend.expectGET('/ministry_view/transactions?date_from=' + transactions._getDateFrom() + '&date_to=' + transactions._getDateTo() + '').respond(200, sampleData);
         transactions._getTransactions().then(function(data){
           expect(data).toEqual(sampleData.financial_transactions.financial_transaction);
         });
@@ -386,15 +386,15 @@
     });
 
     describe('groupByTransactionType function', function(){
-      it('should return an object income and expense arrays split by the sign on the amount', function(){
+      it('should return an object containing income and expense arrays split by gl_account_is_income', function(){
         expect(transactions._groupByTransactionType([
-          {amount: 10},
-          {amount: -5},
-          {amount: 20},
-          {amount: -30}
+          {amount: 10, gl_account_is_income: true},
+          {amount: -5, gl_account_is_income: true},
+          {amount: 20, gl_account_is_income: false},
+          {amount: -30, gl_account_is_income: false}
         ])).toEqual({
-          income: [{amount: 10}, {amount: 20}],
-          expenses: [{amount: -5}, {amount: -30}]
+          income: [{amount: 10, gl_account_is_income: true}, {amount: -5, gl_account_is_income: true}],
+          expenses: [{amount: 20, gl_account_is_income: false}, {amount: -30, gl_account_is_income: false}]
         });
       });
       //TODO: what if amount is 0?

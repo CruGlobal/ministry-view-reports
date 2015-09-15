@@ -52,7 +52,6 @@
       }
 
       function updateTransactions(){
-        console.log('update transactions');
         vm.data = null;
         transactions.getParsedTransactions(vm.country, vm.profile, vm.account).then(function (loadedTransactions) {
           vm.data = loadedTransactions;

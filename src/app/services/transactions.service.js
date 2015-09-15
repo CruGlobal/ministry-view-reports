@@ -85,7 +85,8 @@
         groupByCategory: groupByCategory,
         groupByMonth: groupByMonth,
         addMissingDates: addMissingDates,
-        insertSummedDates: insertSummedDates
+        insertSummedDates: insertSummedDates,
+        sortKeysBy: sortKeysBy
       });
 
       return _(transactions)
@@ -106,6 +107,7 @@
                 .addMissingDates(factory.allDates)
                 .value();
             })
+            .sortKeysBy()
             .value();
         })
         .insertSummedDates()
@@ -122,7 +124,7 @@
      */
     function groupByTransactionType(transactions) {
       return _.groupBy(transactions, function (transaction) {
-        return transaction.amount > 0 ? 'income' : 'expenses';
+        return transaction.gl_account_is_income ? 'income' : 'expenses';
       });
     }
 
@@ -169,7 +171,7 @@
     function reduceAmounts(accountDescGroup){
       return _(accountDescGroup)
         .reduce(function(total, transaction){
-          return total + Math.abs(transaction.amount);
+          return total + Number(transaction.amount);
         }, 0);
     }
 
@@ -225,6 +227,23 @@
           acc[date] += dateObj.sum;
         });
       });
+    }
+
+    /**
+     * Sort object by key
+     * From https://gist.github.com/colingourlay/82506396503c05e2bb94
+     * @param obj
+     * @param comparator
+     * @returns {*}
+     */
+    function sortKeysBy(obj, comparator) {
+      var keys = _.sortBy(_.keys(obj), function (key) {
+        return comparator ? comparator(obj[key], key) : key;
+      });
+
+      return _.object(keys, _.map(keys, function (key) {
+        return obj[key];
+      }));
     }
 
     /**** DATE HELPER FUNCTIONS ****/
