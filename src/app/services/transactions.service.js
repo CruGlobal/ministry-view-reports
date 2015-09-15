@@ -9,7 +9,13 @@
   function transactionsService(Restangular, _, moment){
     var factory = {
       allDates: [],
-      getParsedTransactions: getParsedTransactions
+      getParsedTransactions: getParsedTransactions,
+
+      _getTransactions: getTransactions,
+      _getDateFrom: getDateFrom,
+      _getDateTo: getDateTo,
+      _generateDateRange: generateDateRange,
+      _groupByTransactionType: groupByTransactionType
     };
     return factory;
 
@@ -22,7 +28,7 @@
      */
     function getParsedTransactions(portal_uri, profile_code, account){
       return getTransactions(portal_uri, profile_code, account).then(function(transactions){
-        generateDateRange();
+        factory.allDates = generateDateRange(getDateFrom(), getDateTo());
         return extractData(transactions);
       });
     }
@@ -50,10 +56,46 @@
      * Runs transactions through functions to map, group, and reduce them for visualization
      * @param {Object} transactions
      * @returns {Object}
+     *
+     * Takes transactions array and performs the following operations in order:
+     * - Groups by transaction type (positive or negative)
+     * - Groups those by category
+     * - Groups those by year/month
+     * - Foreach of those, adds sum to object and lifts transactions array into sub key
+     * - Add missing dates
+     * - Add summed dates
      */
     function extractData(transactions) {
-      var groupedByType = groupByTransactionType(transactions);
-      return groupByCategoryAndMonth(groupedByType);
+      _.mixin({
+        groupByTransactionType: groupByTransactionType,
+        groupByCategory: groupByCategory,
+        groupByMonth: groupByMonth,
+        addMissingDates: addMissingDates,
+        addSummedDates: addSummedDates
+      });
+
+      return _(transactions)
+        .groupByTransactionType()
+        .mapValues(function(type) { // for both income and expenses buckets
+          return _(type)
+            .groupByCategory(type)
+            .mapValues(function(category) { // foreach category bucket
+              return _(category)
+                .groupByMonth()
+                .mapValues(function(accountDescGroup) { // foreach year/month bucket
+                  //keep transactions in new sub object and add sums
+                  return {
+                    sum: reduceAmounts(accountDescGroup),
+                    transactions: accountDescGroup
+                  };
+                })
+                .addMissingDates()
+                .value();
+            })
+            .value();
+        })
+        .addSummedDates()
+        .value();
     }
 
     /**
@@ -70,109 +112,51 @@
       });
     }
 
+
     /**
-     * Takes groupedByType object and performs the following operations in order:
-     * - Groups by category
-     * - Groups by year/month
-     * - Foreach of those groups, adds sum to object and adds original transactions array under another key
-     * - Add missing dates
-     */
-    function groupByCategoryAndMonth(groupedByType){
-      return _(groupedByType).mapValues(function(type) { // for both income and expenses buckets
-        /**
-         * Group by account category
-         * Results in:
-         * {
+     * Group by account category
+     * Results in:
+     * {
          *   "Inc Transfers": [<transactions objects>],
          *   "Gift Aid": [<transactions objects>],
          *   <otheCategoryName>: [<transactions objects>],
          *   ...
          * }
-         */
-        return _(type).groupBy(function (transaction) {
+     */
+    function groupByCategory(type) {
+      return _(type)
+        .groupBy(function (transaction) {
           return transaction.gl_account_description;
         })
-        /**
-         * Goes through each category and performs the following operations in order:
-         * - Groups by year/month
-         * - Foreach of those groups, adds sum to object and adds original transactions array under another key
-         * Results in:
-         * {
-           *   "Inc Transfers": {
-           *     2014-09: {sum: 131, transactions: [<transactions objects>]},
-           *     2014-10: {sum: 131, transactions: [<transactions objects>]},
-           *     ...
-           *   },
-           *   "Gift Aid": {
-           *     2014-09: {sum: 78, transactions: [<transactions objects>]},
-           *     2014-10: {sum: 78, transactions: [<transactions objects>]},
-           *     ...
-           *   },
-           *   ...
-           * }
-         */
-          .mapValues(function(category, key){ // foreach category bucket
-            /**
-             * Group by year and month
-             * Results in:
-             * {
-             *   2014-09: [<transactions objects>],
-             *   2014-10: [<transactions objects>],
-             *   ...
-             * }
-             */
-            return _(category).groupBy(function(transaction){
-              //create key by combining year and month with a dash in between
-              return transaction.fiscal_year + '-' + _.padLeft(transaction.fiscal_period, 2, '0');
-            })
-            /**
-             * Takes object of transactions grouped by year/month and for each returns the sum and the original array of transactions
-             * Results in:
-             * {
-               *   2014-09: {sum: 131, transactions: [<transactions objects>]},
-               *   2014-10: {sum: 131, transactions: [<transactions objects>]},
-               *   ...
-               * }
-             */
-              .mapValues(function(accountDescGroup){ // foreach year/month bucket
-                /**
-                 * Takes all transaction amounts in each category and year/month group and returns the sum
-                 */
-                var sum = _.reduce(accountDescGroup, function(total, transaction){
-                  return total + Math.abs(transaction.amount);
-                }, 0);
-                /**
-                 * Returns object, now including sum
-                 */
-                return {
-                  sum: sum,
-                  transactions: accountDescGroup
-                };
-              })
-              .thru(function(val){
-                return addMissingDates(val);
-              }).value();
+        .value();
+    }
 
-
-
-
-            /*-var sum = _.reduce(accountDescSums, function(total, val){
-             return total + val;
-             });
-             var split = key.split('-');
-             var fullDate = moment().year(split[0]).month(split[1] - 1).format('MMM YY');*/
-            /*return {
-             groups: accountDescSums,
-             sum: sum,
-             fullDate: fullDate
-             };*/
-          })
-          .value();
-      })
-        .thru(function(val){
-          return addSummedDates(val)
+    /**
+     * Group by year and month
+     * Results in:
+     * {
+     *   2014-09: [<transactions objects>],
+     *   2014-10: [<transactions objects>],
+     *   ...
+     * }
+     */
+    function groupByMonth(category) {
+      return _(category)
+        .groupBy(function (transaction) {
+          //create key by combining year and month with a dash in between
+          return transaction.fiscal_year + '-' + _.padLeft(transaction.fiscal_period, 2, '0');
         })
         .value();
+    }
+
+    /**
+     * Takes all transaction amounts in each year/month group and returns the sum
+     */
+    function reduceAmounts(accountDescGroup){
+      return _(accountDescGroup)
+        .reduce(function(total, transaction){
+          return total + Math.abs(transaction.amount);
+        }, 0);
     }
 
     /**
@@ -192,10 +176,36 @@
      * }
      */
     function addMissingDates(val){
+      // Get all date keys from allDates
+      var dateKeys = _.pluck(factory.allDates, 'code');
+      // Generate array of zeros for to set the values of empty dates to
+      var zeros = _.map(factory.allDates, _.constant({sum: 0}));
       //pluck code out of allDates to get an array of date codes and then zip them to get an object where the keys are the date codes
-      return _.assign(_.zipObject(_.pluck(factory.allDates, 'code')), val);
+      return _.assign(_.zipObject(dateKeys, zeros), val);
     }
 
+    function addSummedDates(types){
+      _.forEach(types, function(categories, type){
+        types[type + 'Total'] = sumDates(categories);
+      });
+      return types;
+    }
+
+    function sumDates(categories) {
+      //TODO: deal with month that has no transactions
+      return _.transform(categories, function (acc, category) {
+        _.forEach(category, function (dateObj, date) {
+          if (dateObj) {
+            if (acc[date] === undefined) {
+              acc[date] = 0;
+            }
+            acc[date] += dateObj.sum;
+          }
+        });
+      });
+    }
+
+    /**** DATE HELPER FUNCTIONS ****/
 
     /** Get current date in format YYYY-MM-DD where DD is the last day of the month */
     function getDateTo(){
@@ -208,41 +218,18 @@
     }
 
     /** Get array of months between dateFrom and dateTo */
-    function generateDateRange(){
-      var startDate = moment(getDateFrom(), "YYYY-MM-DD");
-      var endDate = moment(getDateTo(), "YYYY-MM-DD");
+    function generateDateRange(startDate, endDate){
+      startDate = moment(startDate, "YYYY-MM-DD");
+      endDate = moment(endDate, "YYYY-MM-DD");
       var range = moment.range(startDate, endDate);
-      factory.allDates = [];
+      var allDates = [];
       range.by('months', function(moment){
-        factory.allDates.push({
+        allDates.push({
           code: moment.format('YYYY-MM'),
           friendly: moment.format('MMM YY')
         });
-      });
-    }
-
-    function addSummedDates(types){
-      _.forEach(types, function(categories, type){
-        types[type + 'Total'] = sumDates(categories);
-      });
-      return types;
-    }
-    function sumDates(categories) {
-      //TODO: deal with month that has no transactions
-      return _(categories).transform(function (acc, category) {
-        _.forEach(category, function (dateObj, date) {
-          if (dateObj) {
-            if (acc[date] === undefined) {
-              acc[date] = 0;
-            }
-            acc[date] += dateObj.sum;
-          }
-        });
-      })
-        .tap(function(val){
-          console.log('here')
-          console.log(val);
-        }).value();
+      }, true);
+      return allDates;
     }
   }
 })();

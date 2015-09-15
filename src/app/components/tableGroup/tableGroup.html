@@ -11,6 +11,6 @@
     {{category}}
   </td>
   <td ng-repeat="(date, value) in values track by date">
-    {{value.sum || 0 | number:0}}
+    {{value.sum | number:0}}
   </td>
 </tr>
