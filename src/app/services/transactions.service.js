@@ -12,10 +12,17 @@
       getParsedTransactions: getParsedTransactions,
 
       _getTransactions: getTransactions,
+      _extractData: extractData,
+      _groupByTransactionType: groupByTransactionType,
+      _groupByCategory: groupByCategory,
+      _groupByMonth: groupByMonth,
+      _reduceAmounts: reduceAmounts,
+      _addMissingDates: addMissingDates,
+      _insertSummedDates: insertSummedDates,
+      _sumDates: sumDates,
       _getDateFrom: getDateFrom,
       _getDateTo: getDateTo,
-      _generateDateRange: generateDateRange,
-      _groupByTransactionType: groupByTransactionType
+      _generateDateRange: generateDateRange
     };
     return factory;
 
@@ -27,8 +34,9 @@
      * @returns {Object}
      */
     function getParsedTransactions(portal_uri, profile_code, account){
+      // Using factory._getDateFrom() instead of getDateFrom() so it can be overwritten in testing. Same with getDateTo()
+      factory.allDates = generateDateRange(factory._getDateFrom(), factory._getDateTo());
       return getTransactions(portal_uri, profile_code, account).then(function(transactions){
-        factory.allDates = generateDateRange(getDateFrom(), getDateTo());
         return extractData(transactions);
       });
     }
@@ -41,12 +49,13 @@
      * @returns {Object}
      */
     function getTransactions(portal_uri, profile_code, account){
+      // Using factory._getDateFrom() instead of getDateFrom() so it can be overwritten in testing. Same with getDateTo()
       return Restangular.one('transactions.json').get({
         portal_uri: portal_uri,
         profile_code: profile_code,
         account: account,
-        date_from: getDateFrom(),
-        date_to: getDateTo()
+        date_from: factory._getDateFrom(),
+        date_to: factory._getDateTo()
       }).then(function(transactionsObj){
         return transactionsObj.financial_transactions.financial_transaction;
       });
@@ -66,12 +75,13 @@
      * - Add summed dates
      */
     function extractData(transactions) {
+      //add processing functions as lodash mixins so they can be used in the lodash chain
       _.mixin({
         groupByTransactionType: groupByTransactionType,
         groupByCategory: groupByCategory,
         groupByMonth: groupByMonth,
         addMissingDates: addMissingDates,
-        addSummedDates: addSummedDates
+        insertSummedDates: insertSummedDates
       });
 
       return _(transactions)
@@ -89,12 +99,12 @@
                     transactions: accountDescGroup
                   };
                 })
-                .addMissingDates()
+                .addMissingDates(factory.allDates)
                 .value();
             })
             .value();
         })
-        .addSummedDates()
+        .insertSummedDates()
         .value();
     }
 
@@ -117,11 +127,11 @@
      * Group by account category
      * Results in:
      * {
-         *   "Inc Transfers": [<transactions objects>],
-         *   "Gift Aid": [<transactions objects>],
-         *   <otheCategoryName>: [<transactions objects>],
-         *   ...
-         * }
+     *   "Inc Transfers": [<transactions objects>],
+     *   "Gift Aid": [<transactions objects>],
+     *   <otheCategoryName>: [<transactions objects>],
+     *   ...
+     * }
      */
     function groupByCategory(type) {
       return _(type)
@@ -175,32 +185,40 @@
      *   ...
      * }
      */
-    function addMissingDates(val){
-      // Get all date keys from allDates
-      var dateKeys = _.pluck(factory.allDates, 'code');
+    function addMissingDates(val, allDates){
+      // Pluck all date codes from allDates - returns an array like ["2014-09", "2014-10", ...]
+      var dateKeys = _.pluck(allDates, 'code');
       // Generate array of zeros for to set the values of empty dates to
-      var zeros = _.map(factory.allDates, _.constant({sum: 0}));
+      var zeros = _.map(allDates, _.constant({sum: 0}));
       //pluck code out of allDates to get an array of date codes and then zip them to get an object where the keys are the date codes
       return _.assign(_.zipObject(dateKeys, zeros), val);
     }
 
-    function addSummedDates(types){
+    /**
+     * Adds incomeTotal and expensesTotal to the main object
+     * @param {object} types
+     * @returns {object}
+     */
+    function insertSummedDates(types){
       _.forEach(types, function(categories, type){
         types[type + 'Total'] = sumDates(categories);
       });
       return types;
     }
 
+    /**
+     * Compute sums for each year/month group
+     * Returns an object with year/month groups as keys and sums as values
+     * @param {object} categories
+     * @returns {object}
+     */
     function sumDates(categories) {
-      //TODO: deal with month that has no transactions
       return _.transform(categories, function (acc, category) {
-        _.forEach(category, function (dateObj, date) {
-          if (dateObj) {
-            if (acc[date] === undefined) {
-              acc[date] = 0;
-            }
-            acc[date] += dateObj.sum;
+        _.forEach(category, function (dateObj, date) { //go through each category. dateObj is the object under each date (the key) and looks like {sum: 10: transactions: [...]}
+          if (acc[date] === undefined) { //if the bucket corresponding to the date var hasn't been created yet
+            acc[date] = 0; //initialize date bucket
           }
+          acc[date] += dateObj.sum;
         });
       });
     }
