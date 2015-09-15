@@ -10,7 +10,7 @@
     var factory = {};
 
     factory.getProfiles = function(portal_uri){
-      return Restangular.all('profiles.json').getList({portal_uri: portal_uri});
+      return Restangular.all('profiles').getList({portal_uri: portal_uri});
     };
 
     return factory;

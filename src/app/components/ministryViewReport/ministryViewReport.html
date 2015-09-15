@@ -3,19 +3,19 @@
     <div class="form-group">
       <div class="col-sm-4">
         <label for="country" class="control-label">Country</label>
-        <select class="form-control" id="country" ng-model="mvr.country"
+        <select class="form-control" id="country" ng-model="mvr.country" ng-change="mvr.updateProfiles()"
           ng-options="option.portal_uri as option.portal_name for option in mvr.countries">
         </select>
       </div>
       <div class="col-sm-4">
         <label for="profile" class="control-label">Profile</label>
-        <select class="form-control" id="profile" ng-model="mvr.profile"
+        <select class="form-control" id="profile" ng-model="mvr.profile" ng-change="mvr.updateTransactions()"
           ng-options="option.code as option.description for option in mvr.profiles">
         </select>
       </div>
       <div class="col-sm-4">
         <label for="account" class="control-label">Account</label>
-        <select class="form-control" id="account" ng-model="mvr.account"
+        <select class="form-control" id="account" ng-model="mvr.account" ng-change="mvr.updateTransactions()"
           ng-options="option.code as option.description for option in (mvr.profiles | filter: {code: (mvr.profile)})[0].financial_accounts.financial_account_info">
           <option value="">All</option>
         </select>

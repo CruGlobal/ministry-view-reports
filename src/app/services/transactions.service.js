@@ -6,7 +6,7 @@
     .factory('transactions', transactionsService);
 
   /** @ngInject */
-  function transactionsService(Restangular, _, moment){
+  function transactionsService(Restangular, _, moment, $log){
     var factory = {
       allDates: [],
       getParsedTransactions: getParsedTransactions,
@@ -50,14 +50,18 @@
      */
     function getTransactions(portal_uri, profile_code, account){
       // Using factory._getDateFrom() instead of getDateFrom() so it can be overwritten in testing. Same with getDateTo()
-      return Restangular.one('transactions.json').get({
+      return Restangular.one('transactions').get({
         portal_uri: portal_uri,
         profile_code: profile_code,
         account: account,
         date_from: factory._getDateFrom(),
         date_to: factory._getDateTo()
       }).then(function(transactionsObj){
-        return transactionsObj.financial_transactions.financial_transaction;
+        if(transactionsObj && transactionsObj.financial_transactions){
+          return transactionsObj.financial_transactions.financial_transaction;
+        }else{
+          $log.error('Transactions object or financial_transactions key is not defined: ' + JSON.stringify(transactionsObj));
+        }
       });
     }
 

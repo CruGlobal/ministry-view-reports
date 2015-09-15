@@ -10,7 +10,7 @@
     var factory = {};
 
     factory.getCountries = function(){
-      return Restangular.all('countries.json').getList();
+      return Restangular.all('countries').getList();
     };
 
     return factory;

@@ -10,7 +10,7 @@
     // Enable log
     $logProvider.debugEnabled(true);
 
-    RestangularProvider.setBaseUrl('/json/ministry_view');
+    RestangularProvider.setBaseUrl('/ministry_view');
   }
 
 })();

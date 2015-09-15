@@ -29,58 +29,37 @@
       vm.color.expenses = vm.color.expenses || '#dc3912';
       vm.color.balance = vm.color.balance || '#ff9900';
 
+      vm.updateProfiles = updateProfiles;
+      vm.updateTransactions = updateTransactions;
+
       activate();
 
       function activate() {
         countries.getCountries().then(function (loadedCountries) {
           vm.countries = loadedCountries;
           vm.country = vm.countries[0].portal_uri; //Default to first country
+          updateProfiles(); //Load profiles with first country
         });
+      }
 
+      function updateProfiles(){
         profiles.getProfiles(vm.country).then(function (loadedProfiles) {
           vm.profiles = loadedProfiles;
           vm.profile = null; //Default to profile where code is null
           vm.account = null; //Default to all accounts
+          updateTransactions();
         });
+      }
 
+      function updateTransactions(){
+        console.log('update transactions');
+        vm.data = null;
         transactions.getParsedTransactions(vm.country, vm.profile, vm.account).then(function (loadedTransactions) {
           vm.data = loadedTransactions;
         });
       }
 
       //TODO: Remove these objects once loaded from json api
-      this.data = {
-        months: [
-          'Sep 14',
-          'Oct 14',
-          'Nov 14',
-          'Dec 14',
-          'Jan 15',
-          'Feb 15',
-          'Mar 15',
-          'Apr 15',
-          'May 15',
-          'Jun 15',
-          'Jul 15',
-          'Aug 15',
-          'Sep 15'
-        ],
-        income: {
-          Income: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-          'Europe Income': [2, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-          'GA NMF Charge': [3, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-        },
-        expenses: {
-          Expenses: [4, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-          'Conf Attended': [2, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-          'Employers NI': [3, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-        },
-        balance: {
-          Balance: [5, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-          'Something else': [2, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-        }
-      };
-
       this.chartObject = {
         "type": "LineChart",
         "displayed": true,
