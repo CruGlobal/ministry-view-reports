@@ -397,7 +397,6 @@
           expenses: [{amount: 20, gl_account_is_income: false}, {amount: -30, gl_account_is_income: false}]
         });
       });
-      //TODO: what if amount is 0?
     });
 
     describe('groupByCategory function', function(){

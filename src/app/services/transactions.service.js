@@ -9,6 +9,7 @@
   function transactionsService(Restangular, _, moment, $log){
     var factory = {
       allDates: [],
+      startingBalance: 0,
       getParsedTransactions: getParsedTransactions,
 
       _getTransactions: getTransactions,
@@ -37,7 +38,7 @@
       // Using factory._getDateFrom() instead of getDateFrom() so it can be overwritten in testing. Same with getDateTo()
       factory.allDates = generateDateRange(factory._getDateFrom(), factory._getDateTo());
       return getTransactions(portal_uri, profile_code, account).then(function(transactions){
-        return extractData(transactions);
+        return extractData(transactions, factory.startingBalance);
       });
     }
 
@@ -57,12 +58,28 @@
         date_from: factory._getDateFrom(),
         date_to: factory._getDateTo()
       }).then(function(transactionsObj){
-        if(transactionsObj && transactionsObj.financial_transactions){
-          return transactionsObj.financial_transactions.financial_transaction;
-        }else{
-          $log.error('Transactions object or financial_transactions key is not defined: ' + JSON.stringify(transactionsObj));
+        if(transactionsObj){
+          factory.startingBalance = sumStartingBalances(transactionsObj.financial_accounts.financial_account);
+          if(transactionsObj.financial_transactions){
+            return transactionsObj.financial_transactions.financial_transaction;
+          }else {
+            $log.error('transactions.financial_transactions key is not defined: ' + JSON.stringify(transactionsObj));
+          }
+          $log.error('Transactions object is not defined: ' + JSON.stringify(transactionsObj));
         }
       });
+    }
+
+    /**
+     * Combine starting balances
+     * TODO: test
+     * @param {array} accounts
+     * @returns {Number}
+     */
+    function sumStartingBalances(accounts){
+      return _.reduce(accounts, function(acc, account){
+        return acc + Number(account.beginning_balance);
+      }, 0);
     }
 
     /**
@@ -78,15 +95,16 @@
      * - Add missing dates
      * - Add summed dates
      */
-    function extractData(transactions) {
+    function extractData(transactions, startingBalance) {
       //add processing functions as lodash mixins so they can be used in the lodash chain
       _.mixin({
         groupByTransactionType: groupByTransactionType,
         groupByCategory: groupByCategory,
         groupByMonth: groupByMonth,
         addMissingDates: addMissingDates,
+        sortKeysBy: sortKeysBy,
         insertSummedDates: insertSummedDates,
-        sortKeysBy: sortKeysBy
+        insertBalances: insertBalances
       });
 
       return _(transactions)
@@ -111,6 +129,7 @@
             .value();
         })
         .insertSummedDates()
+        .insertBalances(startingBalance)
         .value();
     }
 
@@ -230,7 +249,31 @@
     }
 
     /**
+     * Generates balances from starting balance and incomeTotal and expensesTotal arrays
+     * TODO: test
+     * @param {object} types
+     * @returns {object}
+     */
+    function insertBalances(types, startingBalance){
+      console.log(types)
+      types.balances = _(_.zip(_.values(types.incomeTotal), _.values(types.expensesTotal)))
+        .reduce(function (acc, totals, index) {
+          var lastBalance;
+           if(index === 0){
+             lastBalance = acc;
+             acc = [];
+           }else{
+             lastBalance = acc[index - 1];
+           }
+           acc[index] = lastBalance + totals[0] + totals[1];
+          return acc;
+         }, startingBalance);
+      return types;
+    }
+
+    /**
      * Sort object by key
+     * TODO: test
      * From https://gist.github.com/colingourlay/82506396503c05e2bb94
      * @param obj
      * @param comparator
