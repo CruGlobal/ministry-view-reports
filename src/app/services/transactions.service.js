@@ -61,13 +61,14 @@
         date_from: factory._getDateFrom(),
         date_to: factory._getDateTo()
       }).then(function(transactionsObj){
-        if(transactionsObj){
+        if(transactionsObj) {
           factory.startingBalance = sumStartingBalances(transactionsObj.financial_accounts.financial_account);
-          if(transactionsObj.financial_transactions){
+          if (transactionsObj.financial_transactions) {
             return transactionsObj.financial_transactions.financial_transaction;
-          }else {
+          } else {
             $log.error('transactions.financial_transactions key is not defined: ' + JSON.stringify(transactionsObj));
           }
+        }else{
           $log.error('Transactions object is not defined: ' + JSON.stringify(transactionsObj));
         }
       });
@@ -79,7 +80,7 @@
      * @returns {Number}
      */
     function sumStartingBalances(accounts){
-      _.isArray(accounts) || (accounts = [accounts]); //if not array, wrap in array
+      accounts = _.isArray(accounts) ? accounts : [accounts]; //if not array, wrap in array
       return _.reduce(accounts, function(acc, account){
         return acc + Number(account.beginning_balance);
       }, 0);

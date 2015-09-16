@@ -1,4 +1,4 @@
-<tr ng-click="group.isCollapsed = !group.isCollapsed"  ng-style="{'background-color': group.color}">
+<tr ng-click="group.isCollapsed = !group.isCollapsed"  ng-class="{'expandEnabled': group.expand}" ng-style="{'background-color': group.color}">
   <td>
     {{group.name}}
   </td>

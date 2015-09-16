@@ -16,7 +16,8 @@
         name: '@',
         data: '=',
         totals: '=',
-        color: '='
+        color: '=',
+        expand: '='
       },
       bindToController: true
     };
@@ -25,9 +26,9 @@
 
     /** @ngInject */
     function TableGroupController() {
-      this.isCollapsed = true;
-
+      var vm = this;
+      vm.isCollapsed = true;
+      vm.expand = vm.expand === false ? vm.expand : true; //Default to true unless it is already set to false
     }
   }
-
 })();

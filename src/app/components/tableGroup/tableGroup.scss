@@ -1,7 +1,9 @@
 tbody[table-group]{
   > tr:first-child {
     color: #FFF;
-    cursor: pointer;
+    &.expandEnabled{
+      cursor: pointer;
+    }
   }
   :not(:first-child) > td:first-child{
     padding-left: 1.5em;
