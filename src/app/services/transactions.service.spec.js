@@ -454,11 +454,11 @@
             "2014-11": {sum: 36}
           }
         };
-        incomeTotal = {
-          "2014-09": 12 + 15 + 51,
-          "2014-10": 35 + 65 + 42,
-          "2014-11": 87 + 73 + 36
-        };
+        incomeTotal = [
+          12 + 15 + 51,
+          35 + 65 + 42,
+          87 + 73 + 36
+        ];
       });
       it('sumDates should return an array of sums for each month across categories', function(){
         expect(transactions._sumDates(incomeTestData)).toEqual(incomeTotal);

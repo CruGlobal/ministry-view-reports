@@ -76,7 +76,7 @@
 
     /**
      * Combine starting balances
-     * @param {array} accounts
+     * @param {Array} accounts
      * @returns {Number}
      */
     function sumStartingBalances(accounts){
@@ -225,8 +225,8 @@
 
     /**
      * Adds incomeTotal and expensesTotal to the main object
-     * @param {object} types
-     * @returns {object}
+     * @param {Object} types
+     * @returns {Object}
      */
     function insertSummedDates(types){
       _.forEach(types, function(categories, type){
@@ -238,24 +238,27 @@
     /**
      * Compute sums for each year/month group
      * Returns an object with year/month groups as keys and sums as values
-     * @param {object} categories
-     * @returns {object}
+     * @param {Object} categories
+     * @returns {Object}
      */
     function sumDates(categories) {
-      return _.transform(categories, function (acc, category) {
-        _.forEach(category, function (dateObj, date) { //go through each category. dateObj is the object under each date (the key) and looks like {sum: 10: transactions: [...]}
-          if (acc[date] === undefined) { //if the bucket corresponding to the date var hasn't been created yet
-            acc[date] = 0; //initialize date bucket
-          }
-          acc[date] += dateObj.sum;
-        });
-      });
+      return _(categories)
+        .transform(function (acc, category) {
+          _.forEach(category, function (dateObj, date) { //go through each category. dateObj is the object under each date (the key) and looks like {sum: 10: transactions: [...]}
+            if (acc[date] === undefined) { //if the bucket corresponding to the date var hasn't been created yet
+              acc[date] = 0; //initialize date bucket
+            }
+            acc[date] += dateObj.sum;
+          });
+        })
+        .values() //drop date keys as they aren't needed
+        .value();
     }
 
     /**
      * Generates balances from starting balance and incomeTotal and expensesTotal arrays
-     * @param {object} types
-     * @returns {object}
+     * @param {Object} types
+     * @returns {Object}
      */
     function insertBalances(types, startingBalance){
       types.balances = _(_.zip(_.values(types.incomeTotal), _.values(types.expensesTotal)))
