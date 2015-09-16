@@ -75,7 +75,7 @@
      * Map transaction data into a Google DataTable literal string
      * @param {Array} dates
      * @param {Object} data
-     * @returns {Object}
+     * @returns {Array}
      */
     function mapTransactionData(dates, data){
       return _([_.pluck(dates, 'friendly'), data.incomeTotal, data.expensesTotal, data.balances])
@@ -91,7 +91,6 @@
               .value()
           };
         })
-        .tap(function(val){console.log(val)})
         .value();
     }
   }
