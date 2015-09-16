@@ -13,6 +13,7 @@
       getParsedTransactions: getParsedTransactions,
 
       _getTransactions: getTransactions,
+      _sumStartingBalances: sumStartingBalances,
       _extractData: extractData,
       _groupByTransactionType: groupByTransactionType,
       _groupByCategory: groupByCategory,
@@ -21,6 +22,8 @@
       _addMissingDates: addMissingDates,
       _insertSummedDates: insertSummedDates,
       _sumDates: sumDates,
+      _insertBalances: insertBalances,
+      _sortKeysBy: sortKeysBy,
       _getDateFrom: getDateFrom,
       _getDateTo: getDateTo,
       _generateDateRange: generateDateRange
@@ -72,11 +75,11 @@
 
     /**
      * Combine starting balances
-     * TODO: test
      * @param {array} accounts
      * @returns {Number}
      */
     function sumStartingBalances(accounts){
+      _.isArray(accounts) || (accounts = [accounts]); //if not array, wrap in array
       return _.reduce(accounts, function(acc, account){
         return acc + Number(account.beginning_balance);
       }, 0);
@@ -250,12 +253,10 @@
 
     /**
      * Generates balances from starting balance and incomeTotal and expensesTotal arrays
-     * TODO: test
      * @param {object} types
      * @returns {object}
      */
     function insertBalances(types, startingBalance){
-      console.log(types)
       types.balances = _(_.zip(_.values(types.incomeTotal), _.values(types.expensesTotal)))
         .reduce(function (acc, totals, index) {
           var lastBalance;
@@ -273,7 +274,6 @@
 
     /**
      * Sort object by key
-     * TODO: test
      * From https://gist.github.com/colingourlay/82506396503c05e2bb94
      * @param obj
      * @param comparator
