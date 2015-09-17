@@ -1,7 +1,52 @@
-table.mvr-table{
-  tr,td{
-    :not(:first-child){
-      text-align: right;
+.mvr-table {
+  margin-bottom: 20px; //Add margin outside of responsive scroll
+  > table {
+    margin-bottom: 0; //Remove margin from inside of responsive scroll
+
+    > thead > tr > th {
+      border-bottom: none;
+    }
+    > tbody > tr > th {
+      border-top: none;
+    }
+    > tbody + tbody {
+      border-top: none;
+    }
+    > tbody > tr:nth-child(2) > td{
+      border-top: none;
+    }
+
+    tr, td {
+      :not(:first-child) {
+        text-align: right; //Align numbers right
+      }
+    }
+
+    > tbody[table-group] {
+      //First row of table group
+      > tr:first-child {
+        color: #FFF;
+        &.expandEnabled {
+          cursor: pointer;
+        }
+      }
+      //Indent sub categories
+      :not(:first-child) {
+        > td:first-child {
+          font-weight: 600;
+          padding-left: 1.5em;
+        }
+        //Add button on hover of cell
+        > td:not(:first-child) > span {
+          padding: .2em .6em .3em;
+          &:hover {
+            cursor: pointer;
+            background-color: #36B4DA;
+            color: #FFF;
+            border-radius: .25em;
+          }
+        }
+      }
     }
   }
 }
