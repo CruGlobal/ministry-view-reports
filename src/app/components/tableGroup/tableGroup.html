@@ -11,6 +11,6 @@
     {{category}}
   </td>
   <td ng-repeat="(date, value) in values track by date">
-    <span>{{value.sum | number:0}}</span>
+    <span ng-click="group.showMonthTransactions(value.transactions, date, category); $event.stopPropagation();">{{value.sum | number:0}}</span>
   </td>
 </tr>
