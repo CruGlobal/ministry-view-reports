@@ -21,13 +21,19 @@
     return directive;
 
     /** @ngInject */
-    function MinistryViewReportController(countries, profiles, transactions, visualization) {
+    function MinistryViewReportController(countries, profiles, transactions, visualization, _, $log) {
       var vm = this;
       vm.transactions = transactions;
       vm.colors = vm.colors || {};
       vm.colors.income = vm.colors.income || '#3366cc';
       vm.colors.expenses = vm.colors.expenses || '#dc3912';
       vm.colors.balance = vm.colors.balance || '#ff9900';
+      var zeroArray = _.fill(new Array(13), 0);
+      var emptyData = {
+        incomeTotal: zeroArray,
+        expensesTotal: zeroArray,
+        balances: zeroArray
+      };
 
       vm.updateProfiles = updateProfiles;
       vm.updateTransactions = updateTransactions;
@@ -35,6 +41,7 @@
       activate();
 
       function activate() {
+        vm.data = emptyData;
         countries.getCountries().then(function (loadedCountries) {
           vm.countries = loadedCountries;
           vm.country = vm.countries[0].portal_uri; //Default to first country
@@ -52,10 +59,13 @@
       }
 
       function updateTransactions(){
-        vm.data = null;
+        vm.data = emptyData;
         transactions.getParsedTransactions(vm.country, vm.profile, vm.account).then(function (loadedTransactions) {
           vm.data = loadedTransactions;
           vm.chartObject = visualization.getChartObject(transactions.allDates, vm.data, vm.colors);
+          },
+          function (reason) {
+            $log.error(reason);
         });
       }
     }

@@ -6,7 +6,7 @@
     .factory('transactions', transactionsService);
 
   /** @ngInject */
-  function transactionsService(Restangular, _, moment, $log){
+  function transactionsService(Restangular, _, moment, $q){
     var factory = {
       allDates: [],
       startingBalance: 0,
@@ -66,10 +66,10 @@
           if (transactionsObj.financial_transactions) {
             return transactionsObj.financial_transactions.financial_transaction;
           } else {
-            $log.error('transactions.financial_transactions key is not defined: ' + JSON.stringify(transactionsObj));
+            return $q.reject('transactions.financial_transactions key is not defined: ' + JSON.stringify(transactionsObj));
           }
         }else{
-          $log.error('Transactions object is not defined: ' + JSON.stringify(transactionsObj));
+          return $q.reject('Transactions object is not defined: ' + JSON.stringify(transactionsObj));
         }
       });
     }
@@ -264,15 +264,15 @@
       types.balances = _(_.zip(_.values(types.incomeTotal), _.values(types.expensesTotal)))
         .reduce(function (acc, totals, index) {
           var lastBalance;
-           if(index === 0){
-             lastBalance = acc;
-             acc = [];
-           }else{
-             lastBalance = acc[index - 1];
-           }
-           acc[index] = lastBalance + totals[0] + totals[1];
+          if(index === 0){
+            lastBalance = acc;
+            acc = [];
+          }else{
+            lastBalance = acc[index - 1];
+          }
+          acc[index] = lastBalance + totals[0] + totals[1];
           return acc;
-         }, startingBalance);
+        }, startingBalance);
       return types;
     }
 
