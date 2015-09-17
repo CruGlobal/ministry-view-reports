@@ -28,12 +28,6 @@
       vm.colors.income = vm.colors.income || '#3366cc';
       vm.colors.expenses = vm.colors.expenses || '#dc3912';
       vm.colors.balance = vm.colors.balance || '#ff9900';
-      var zeroArray = _.fill(new Array(13), 0);
-      var emptyData = {
-        incomeTotal: zeroArray,
-        expensesTotal: zeroArray,
-        balances: zeroArray
-      };
 
       vm.updateProfiles = updateProfiles;
       vm.updateTransactions = updateTransactions;
@@ -41,7 +35,7 @@
       activate();
 
       function activate() {
-        vm.data = emptyData;
+        setEmptyData();
         countries.getCountries().then(function (loadedCountries) {
           vm.countries = loadedCountries;
           vm.country = vm.countries[0].portal_uri; //Default to first country
@@ -59,14 +53,24 @@
       }
 
       function updateTransactions(){
-        vm.data = emptyData;
+        setEmptyData();
         transactions.getParsedTransactions(vm.country, vm.profile, vm.account).then(function (loadedTransactions) {
-          vm.data = loadedTransactions;
-          vm.chartObject = visualization.getChartObject(transactions.allDates, vm.data, vm.colors);
+            vm.data = loadedTransactions;
+            vm.chartObject = visualization.getChartObject(transactions.allDates, vm.data, vm.colors);
           },
           function (reason) {
             $log.error(reason);
-        });
+          });
+      }
+
+      function setEmptyData(){
+        var zeroArray = _.fill(new Array(13), 0);
+        vm.data = {
+          incomeTotal: zeroArray,
+          expensesTotal: zeroArray,
+          balances: zeroArray
+        };
+        vm.chartObject = visualization.getChartObject(transactions.allDates, vm.data, vm.colors);
       }
     }
   }
