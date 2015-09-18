@@ -91,7 +91,10 @@
             3: {
               color: '#555',
               visibleInLegend: false,
-              lineWidth: 2
+              lineWidth: 2,
+              lineDashStyle: [10,7],
+              pointsVisible: false,
+              enableInteractivity: false
             }
           }
         }
@@ -113,10 +116,10 @@
             "c": _(col)
               .map(function(value){
                 return {
-                  "v": _.isNumber(value) ? Math.abs(value).toFixed(2) : moment(value, 'MMM YY').toDate() //format as number with 2 decimal places or js date object
+                  "v": _.isNumber(value) ? value.toFixed(2) : moment(value, 'MMM YY').toDate() //format as number with 2 decimal places or js date object
                 };
               })
-              .push({v: index === 11 ? 'Income: $' + col[4].toFixed(2) : null}) //add annotation to last avgIncome data point
+              .push({v: index === 11 ? 'Avg. Income: $' + col[4].toFixed(2) : null}) //add annotation to last avgIncome data point
               .value()
           };
         })

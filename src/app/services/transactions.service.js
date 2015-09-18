@@ -113,16 +113,18 @@
 
       return _(transactions)
         .groupByTransactionType()
-        .mapValues(function(type) { // for both income and expenses buckets
+        .mapValues(function(type, typeName) { // for both income and expenses buckets
           return _(type)
-            .groupByCategory(type)
+            .groupByCategory()
             .mapValues(function(category) { // foreach category bucket
               return _(category)
                 .groupByMonth()
                 .mapValues(function(accountDescGroup) { // foreach year/month bucket
+                  //make expenses positive by flipping sign
+                  var signModifier = typeName === 'expenses' ? -1 : 1;
                   //keep transactions in new sub object and add sums
                   return {
-                    sum: reduceAmounts(accountDescGroup),
+                    sum: signModifier * reduceAmounts(accountDescGroup),
                     transactions: accountDescGroup
                   };
                 })
@@ -270,7 +272,7 @@
           }else{
             lastBalance = acc[index - 1];
           }
-          acc[index] = lastBalance + totals[0] + totals[1];
+          acc[index] = lastBalance + totals[0] - totals[1]; //income minus expenses since expenses have been made positive
           return acc;
         }, startingBalance);
       return types;
