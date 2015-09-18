@@ -85,7 +85,7 @@
             "c": _(col)
               .map(function(value){
                 return {
-                  "v": _.isNumber(value) ? Math.abs(value) : value
+                  "v": _.isNumber(value) ? Math.abs(value).toFixed(2) : value
                 };
               })
               .value()

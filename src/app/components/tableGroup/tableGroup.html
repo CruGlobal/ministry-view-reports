@@ -6,7 +6,7 @@
     {{value | number:0}}
   </th>
 </tr>
-<tr ng-repeat="(category, values) in group.data track by $index" collapse="group.isCollapsed">
+<tr ng-repeat="(category, values) in group.data track by $index" ng-if="!group.isCollapsed">
   <td>
     {{category}}
   </td>
