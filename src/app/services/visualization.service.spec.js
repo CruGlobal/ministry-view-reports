@@ -42,48 +42,57 @@
           {
             c: [
               {
-                v: 'Aug 14'
+                v: new Date('Fri Aug 01 2014 00:00:00 GMT-0400 (EDT)')
               },
               {
-                v: 100
+                v: '100.00'
               },
               {
-                v: 200
+                v: '200.00'
               },
               {
-                v: 300
+                v: '300.00'
+              },
+              {
+                v: null
               }
             ]
           },
           {
             c: [
               {
-                v: 'Sep 14'
+                v: new Date('Mon Sep 01 2014 00:00:00 GMT-0400 (EDT)')
               },
               {
-                v: 50
+                v: '50.00'
               },
               {
-                v: 60
+                v: '60.00'
               },
               {
-                v: 70
+                v: '70.00'
+              },
+              {
+                v: null
               }
             ]
           },
           {
             c: [
               {
-                v: 'Oct 14'
+                v: new Date('Wed Oct 01 2014 00:00:00 GMT-0400 (EDT)')
               },
               {
-                v: 1
+                v: '1.00'
               },
               {
-                v: 2
+                v: '2.00'
               },
               {
-                v: 3
+                v: '3.00'
+              },
+              {
+                v: null
               }
             ]
           }
@@ -91,6 +100,22 @@
       });
       it('should map data into the Google DataTable literal string format', function(){
         expect(visualization._mapTransactionData(sampleAllDates, sampleData)).toEqual(processedSampleData);
+      });
+    });
+
+    describe('insertAvgIncome function', function(){
+      it('should insert average income into data object', function(){
+        var incomeData = [0, 1, 2, 3, 4, 5 , 6, 7, 8, 9, 10, 11, 12];
+        expect(visualization._insertAvgIncome({incomeTotal: incomeData}))
+          .toEqual({incomeTotal: incomeData, avgIncome: [null, null, null, null, null, null, 8.5, 8.5, 8.5, 8.5, 8.5, 8.5, null]});
+      });
+    });
+
+    describe('calculateAvgIncome function', function(){
+      it('should calculate average income over last 6 months skipping the current month', function(){
+        var incomeData = [0, 1, 2, 3, 4, 5 , 6, 7, 8, 9, 10, 11, 12];
+        expect(visualization._calculateAvgIncome(incomeData))
+          .toEqual(8.5);
       });
     });
 
