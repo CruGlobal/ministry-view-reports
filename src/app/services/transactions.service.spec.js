@@ -2,23 +2,28 @@
   'use strict';
 
   describe('service transactions', function () {
-    var $httpBackend, transactions, sampleAllDates, sampleStartingBalance, sampleData, processedSampleData;
+    var $httpBackend, transactions, dateRange, sampleStartingBalance, sampleData, processedSampleData;
 
     beforeEach(module('ministryViewReports'));
-    beforeEach(inject(function (_$httpBackend_, _transactions_) {
-      $httpBackend = _$httpBackend_;
-      transactions = _transactions_;
-      transactions._getDateTo = function () {
-        return '2014-10-31';
-      };
-      transactions._getDateFrom = function () {
-        return '2014-08-01';
-      };
-      sampleAllDates = [
-        {code: '2014-08', friendly: 'Aug 14'},
-        {code: '2014-09', friendly: 'Sep 14'},
-        {code: '2014-10', friendly: 'Oct 14'}
-      ];
+    beforeEach(function(){
+
+      module(function($provide) {
+        $provide.factory('dateRange', function(){
+          return {
+            getDateFrom: function () {
+              return '2014-08-01';
+            },
+            getDateTo: function () {
+              return '2014-10-31';
+            },
+            allDates: [
+              {code: '2014-08', friendly: 'Aug 14'},
+              {code: '2014-09', friendly: 'Sep 14'},
+              {code: '2014-10', friendly: 'Oct 14'}
+            ]
+          };
+        });
+      });
       sampleStartingBalance = 20038.74;
       sampleData = {
         "financial_accounts": {
@@ -155,7 +160,13 @@
         "expensesTotal": [0, 0, 89.15],
         "balances": [20038.74, 21013.68, 20964.53]
       };
-    }));
+
+      inject(function (_$httpBackend_, _transactions_, _dateRange_) {
+        $httpBackend = _$httpBackend_;
+        transactions = _transactions_;
+        dateRange = _dateRange_;
+      });
+    });
 
     it('should be registered', function () {
       expect(transactions).not.toEqual(null);
@@ -163,8 +174,7 @@
 
     describe('getParsedTransactions function', function () {
       it('should be run everything', function () {
-        // for dates rely on overwritten _getDateTo and _getDateFrom above
-        $httpBackend.expectGET('/ministry_view/transactions?date_from=' + transactions._getDateFrom() + '&date_to=' + transactions._getDateTo() + '').respond(200, sampleData);
+        $httpBackend.expectGET('/ministry_view/transactions?date_from=' + dateRange.getDateFrom() + '&date_to=' + dateRange.getDateTo() + '').respond(200, sampleData);
         transactions.getParsedTransactions().then(function (data) {
           expect(data).toEqual(processedSampleData);
         });
@@ -175,7 +185,7 @@
     describe('getTransactions function', function () {
       it('should request transactions from the server', function () {
         // for dates rely on overwritten _getDateTo and _getDateFrom above
-        $httpBackend.expectGET('/ministry_view/transactions?date_from=' + transactions._getDateFrom() + '&date_to=' + transactions._getDateTo() + '').respond(200, sampleData);
+        $httpBackend.expectGET('/ministry_view/transactions?date_from=' + dateRange.getDateFrom() + '&date_to=' + dateRange.getDateTo() + '').respond(200, sampleData);
         transactions._getTransactions().then(function (data) {
           expect(data).toEqual(sampleData.financial_transactions.financial_transaction);
         });
@@ -194,7 +204,7 @@
 
     describe('extractData function', function () {
       it('should process input data and extract everything needed', function () {
-        transactions.allDates = sampleAllDates;
+
         expect(transactions._extractData(sampleData.financial_transactions.financial_transaction, sampleStartingBalance)).toEqual(processedSampleData);
       });
     });
@@ -262,7 +272,7 @@
     describe('addMissingDates function', function () {
       var allDates;
       beforeEach(function () {
-        allDates = transactions._generateDateRange('2015-01-01', '2015-05-30');
+        allDates = [{code: '2015-01'}, {code: '2015-02'}, {code: '2015-03'}, {code: '2015-04'}, {code: '2015-05'}];
       });
       it('should add dates that are not already in object', function () {
         expect(transactions._addMissingDates({
@@ -337,16 +347,6 @@
     describe('sortKeysBy function', function () {
       it('should sort and object by keys', function () {
         expect(transactions._sortKeysBy({d: 4, a: 1, c: 3, b: 2})).toEqual({a: 1, b: 2, c: 3, d: 4});
-      });
-    });
-
-    describe('generateDateRange function', function () {
-      it('should return an array of dates in between start and end dates', function () {
-        expect(transactions._generateDateRange('2014-12-01', '2015-02-28')).toEqual([
-          {code: '2014-12', friendly: 'Dec 14'},
-          {code: '2015-01', friendly: 'Jan 15'},
-          {code: '2015-02', friendly: 'Feb 15'}
-        ]);
       });
     });
 

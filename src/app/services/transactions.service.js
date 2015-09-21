@@ -6,9 +6,8 @@
     .factory('transactions', transactionsService);
 
   /** @ngInject */
-  function transactionsService(Restangular, _, moment, $q){
+  function transactionsService(Restangular, _, $q, dateRange){
     var factory = {
-      allDates: [],
       startingBalance: 0,
       getParsedTransactions: getParsedTransactions,
 
@@ -23,10 +22,7 @@
       _insertSummedDates: insertSummedDates,
       _sumDates: sumDates,
       _insertBalances: insertBalances,
-      _sortKeysBy: sortKeysBy,
-      _getDateFrom: getDateFrom,
-      _getDateTo: getDateTo,
-      _generateDateRange: generateDateRange
+      _sortKeysBy: sortKeysBy
     };
     return factory;
 
@@ -38,8 +34,6 @@
      * @returns {Object}
      */
     function getParsedTransactions(portal_uri, profile_code, account){
-      // Using factory._getDateFrom() instead of getDateFrom() so it can be overwritten in testing. Same with getDateTo()
-      factory.allDates = generateDateRange(factory._getDateFrom(), factory._getDateTo());
       return getTransactions(portal_uri, profile_code, account).then(function(transactions){
         return extractData(transactions, factory.startingBalance);
       });
@@ -53,13 +47,12 @@
      * @returns {Object}
      */
     function getTransactions(portal_uri, profile_code, account){
-      // Using factory._getDateFrom() instead of getDateFrom() so it can be overwritten in testing. Same with getDateTo()
       return Restangular.one('transactions').get({
         portal_uri: portal_uri,
         profile_code: profile_code,
         account: account,
-        date_from: factory._getDateFrom(),
-        date_to: factory._getDateTo()
+        date_from: dateRange.getDateFrom(),
+        date_to: dateRange.getDateTo()
       }).then(function(transactionsObj){
         if(transactionsObj) {
           factory.startingBalance = sumStartingBalances(transactionsObj.financial_accounts.financial_account);
@@ -89,6 +82,7 @@
     /**
      * Runs transactions through functions to map, group, and reduce them for visualization
      * @param {Object} transactions
+     * @param {number} startingBalance
      * @returns {Object}
      *
      * Takes transactions array and performs the following operations in order:
@@ -128,7 +122,7 @@
                     transactions: accountDescGroup
                   };
                 })
-                .addMissingDates(factory.allDates)
+                .addMissingDates(dateRange.allDates)
                 .value();
             })
             .sortKeysBy()
@@ -293,33 +287,6 @@
       return _.object(keys, _.map(keys, function (key) {
         return obj[key];
       }));
-    }
-
-    /**** DATE HELPER FUNCTIONS ****/
-
-    /** Get current date in format YYYY-MM-DD where DD is the last day of the month */
-    function getDateTo(){
-      return moment().format('YYYY-MM') + '-' + moment().daysInMonth();
-    }
-
-    /** Get the month that is 12 months before current date in format YYYY-MM-DD where DD is the first day of the month */
-    function getDateFrom(){
-      return moment().subtract(12, 'months').format('YYYY-MM') + '-01';
-    }
-
-    /** Get array of months between dateFrom and dateTo */
-    function generateDateRange(startDate, endDate){
-      startDate = moment(startDate, "YYYY-MM-DD");
-      endDate = moment(endDate, "YYYY-MM-DD");
-      var range = moment.range(startDate, endDate);
-      var allDates = [];
-      range.by('months', function(moment){
-        allDates.push({
-          code: moment.format('YYYY-MM'),
-          friendly: moment.format('MMM YY')
-        });
-      }, true);
-      return allDates;
     }
   }
 })();

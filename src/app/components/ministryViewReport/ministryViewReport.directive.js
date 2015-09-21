@@ -21,7 +21,7 @@
     return directive;
 
     /** @ngInject */
-    function MinistryViewReportController(countries, profiles, transactions, visualization, _, $log) {
+    function MinistryViewReportController(dateRange, countries, profiles, transactions, visualization, _, $log) {
       var vm = this;
       vm.transactions = transactions;
       vm.colors = vm.colors || {};
@@ -56,7 +56,7 @@
         setEmptyData();
         transactions.getParsedTransactions(vm.country, vm.profile, vm.account).then(function (loadedTransactions) {
             vm.data = loadedTransactions;
-            vm.chartObject = visualization.getChartObject(transactions.allDates, vm.data, vm.colors);
+            vm.chartObject = visualization.getChartObject(dateRange.allDates, vm.data, vm.colors);
           },
           function (reason) {
             $log.error(reason);
@@ -70,7 +70,7 @@
           expensesTotal: zeroArray,
           balances: zeroArray
         };
-        vm.chartObject = visualization.getChartObject(transactions.allDates, vm.data, vm.colors);
+        vm.chartObject = visualization.getChartObject(dateRange.allDates, vm.data, vm.colors);
       }
     }
   }
