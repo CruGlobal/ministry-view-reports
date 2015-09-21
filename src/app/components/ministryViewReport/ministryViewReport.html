@@ -15,7 +15,7 @@
       </div>
       <div class="col-sm-4">
         <label for="account" class="control-label">Account</label>
-        <select class="form-control" id="account" ng-model="mvr.account" ng-change="mvr.updateTransactions()"
+        <select class="form-control" id="account" ng-model="mvr.account" ng-change="mvr.updateTransactionsAndDonations()"
           ng-options="option.code as option.description for option in (mvr.profiles | filter: {code: (mvr.profile)})[0].financial_accounts.financial_account_info">
           <option value="">All</option>
         </select>

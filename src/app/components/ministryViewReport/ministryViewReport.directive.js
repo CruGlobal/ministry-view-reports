@@ -21,7 +21,7 @@
     return directive;
 
     /** @ngInject */
-    function MinistryViewReportController(dateRange, countries, profiles, transactions, visualization, _, $log) {
+    function MinistryViewReportController(dateRange, countries, profiles, transactions, donations, visualization, _, $log) {
       var vm = this;
       vm.transactions = transactions;
       vm.colors = vm.colors || {};
@@ -30,7 +30,7 @@
       vm.colors.balance = vm.colors.balance || '#ff9900';
 
       vm.updateProfiles = updateProfiles;
-      vm.updateTransactions = updateTransactions;
+      vm.updateTransactionsAndDonations = updateTransactionsAndDonations;
 
       activate();
 
@@ -48,15 +48,22 @@
           vm.profiles = loadedProfiles;
           vm.profile = null; //Default to profile where code is null
           vm.account = null; //Default to all accounts
-          updateTransactions();
+          updateTransactionsAndDonations();
         });
       }
 
-      function updateTransactions(){
+      function updateTransactionsAndDonations(){
         setEmptyData();
         transactions.getParsedTransactions(vm.country, vm.profile, vm.account).then(function (loadedTransactions) {
             vm.data = loadedTransactions;
             vm.chartObject = visualization.getChartObject(dateRange.allDates, vm.data, vm.colors);
+          },
+          function (reason) {
+            $log.error(reason);
+          });
+        donations.getParsedDonations(vm.country, vm.profile, vm.account).then(function (loadedDonations) {
+            vm.donations = loadedDonations;
+            console.log('LoadedDonationTransactions:', vm.donations);
           },
           function (reason) {
             $log.error(reason);

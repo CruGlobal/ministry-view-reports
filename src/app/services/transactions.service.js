@@ -6,7 +6,7 @@
     .factory('transactions', transactionsService);
 
   /** @ngInject */
-  function transactionsService(Restangular, _, $q, dateRange){
+  function transactionsService(Restangular, _, $q, dateRange, transactionDataManipulation){
     var factory = {
       startingBalance: 0,
       getParsedTransactions: getParsedTransactions,
@@ -15,14 +15,7 @@
       _sumStartingBalances: sumStartingBalances,
       _extractData: extractData,
       _groupByTransactionType: groupByTransactionType,
-      _groupByCategory: groupByCategory,
-      _groupByMonth: groupByMonth,
-      _reduceAmounts: reduceAmounts,
-      _addMissingDates: addMissingDates,
-      _insertSummedDates: insertSummedDates,
-      _sumDates: sumDates,
       _insertBalances: insertBalances,
-      _sortKeysBy: sortKeysBy
     };
     return factory;
 
@@ -97,38 +90,13 @@
       //add processing functions as lodash mixins so they can be used in the lodash chain
       _.mixin({
         groupByTransactionType: groupByTransactionType,
-        groupByCategory: groupByCategory,
-        groupByMonth: groupByMonth,
-        addMissingDates: addMissingDates,
-        sortKeysBy: sortKeysBy,
-        insertSummedDates: insertSummedDates,
+        mainDataProcessing: transactionDataManipulation.extractData,
         insertBalances: insertBalances
       });
 
       return _(transactions)
         .groupByTransactionType()
-        .mapValues(function(type, typeName) { // for both income and expenses buckets
-          return _(type)
-            .groupByCategory()
-            .mapValues(function(category) { // foreach category bucket
-              return _(category)
-                .groupByMonth()
-                .mapValues(function(accountDescGroup) { // foreach year/month bucket
-                  //make expenses positive by flipping sign
-                  var signModifier = typeName === 'expenses' ? -1 : 1;
-                  //keep transactions in new sub object and add sums
-                  return {
-                    sum: signModifier * reduceAmounts(accountDescGroup),
-                    transactions: accountDescGroup
-                  };
-                })
-                .addMissingDates(dateRange.allDates)
-                .value();
-            })
-            .sortKeysBy()
-            .value();
-        })
-        .insertSummedDates()
+        .mainDataProcessing('gl_account_description', 'transaction_date')
         .insertBalances(startingBalance)
         .value();
     }
@@ -145,110 +113,6 @@
       return _.groupBy(transactions, function (transaction) {
         return transaction.gl_account_is_income ? 'income' : 'expenses';
       });
-    }
-
-
-    /**
-     * Group by account category
-     * Results in:
-     * {
-     *   "Inc Transfers": [<transactions objects>],
-     *   "Gift Aid": [<transactions objects>],
-     *   <otheCategoryName>: [<transactions objects>],
-     *   ...
-     * }
-     */
-    function groupByCategory(type) {
-      return _(type)
-        .groupBy(function (transaction) {
-          return transaction.gl_account_description;
-        })
-        .value();
-    }
-
-    /**
-     * Group by year and month
-     * Results in:
-     * {
-     *   2014-09: [<transactions objects>],
-     *   2014-10: [<transactions objects>],
-     *   ...
-     * }
-     */
-    function groupByMonth(category) {
-      return _(category)
-        .groupBy(function (transaction) {
-          //create key by combining year and month with a dash in between
-          return transaction.fiscal_year + '-' + _.padLeft(transaction.fiscal_period, 2, '0');
-        })
-        .value();
-    }
-
-    /**
-     * Takes all transaction amounts in each year/month group and returns the sum
-     */
-    function reduceAmounts(accountDescGroup){
-      return _(accountDescGroup)
-        .reduce(function(total, transaction){
-          return total + Number(transaction.amount);
-        }, 0);
-    }
-
-    /**
-     * Add any missing dates
-     * Takes:
-     * {
-     *   2014-09: {sum: 131, transactions: [<transactions objects>]},
-     *   2014-11: {sum: 131, transactions: [<transactions objects>]},
-     *   ...
-     * }
-     * and adds missing keys:
-     * {
-     *   2014-09: {sum: 131, transactions: [<transactions objects>]},
-     *   2014-10: {sum: 0},
-     *   2014-11: {sum: 131, transactions: [<transactions objects>]},
-     *   ...
-     * }
-     */
-    function addMissingDates(val, allDates){
-      // Pluck all date codes from allDates - returns an array like ["2014-09", "2014-10", ...]
-      var dateKeys = _.pluck(allDates, 'code');
-      // Generate array of zeros for to set the values of empty dates to
-      var zeros = _.map(allDates, _.constant({sum: 0}));
-      //pluck code out of allDates to get an array of date codes and then zip them to get an object where the keys are the date codes
-      return _.assign(_.zipObject(dateKeys, zeros), val);
-    }
-
-    /**
-     * Adds incomeTotal and expensesTotal to the main object
-     * @param {Object} types
-     * @returns {Object}
-     */
-    function insertSummedDates(types){
-      _.forEach(types, function(categories, type){
-        types[type + 'Total'] = sumDates(categories);
-      });
-      return types;
-    }
-
-    /**
-     * Compute sums for each year/month group
-     * Returns an object with year/month groups as keys and sums as values
-     * @param {Object} categories
-     * @returns {Object}
-     */
-    function sumDates(categories) {
-      return _(categories)
-        .transform(function (acc, category) {
-          _.forEach(category, function (dateObj, date) { //go through each category. dateObj is the object under each date (the key) and looks like {sum: 10: transactions: [...]}
-            if (acc[date] === undefined) { //if the bucket corresponding to the date var hasn't been created yet
-              acc[date] = 0; //initialize date bucket
-            }
-            acc[date] += dateObj.sum;
-          });
-        })
-        .values() //drop date keys as they aren't needed
-        .value();
     }
 
     /**
@@ -270,23 +134,6 @@
           return acc;
         }, startingBalance);
       return types;
-    }
-
-    /**
-     * Sort object by key
-     * From https://gist.github.com/colingourlay/82506396503c05e2bb94
-     * @param obj
-     * @param comparator
-     * @returns {*}
-     */
-    function sortKeysBy(obj, comparator) {
-      var keys = _.sortBy(_.keys(obj), function (key) {
-        return comparator ? comparator(obj[key], key) : key;
-      });
-
-      return _.object(keys, _.map(keys, function (key) {
-        return obj[key];
-      }));
     }
   }
 })();
