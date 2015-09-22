@@ -41,7 +41,8 @@
             </th>
           </tr>
           </thead>
-          <tbody table-group name="Income" data="mvr.data.income" totals="mvr.data.incomeTotal" color="mvr.colors.income"></tbody>
+          <tbody table-group name="Income" data="mvr.data.income" totals="mvr.data.incomeTotal" color="mvr.colors.income" is-collapsed="incomeCollapsed"></tbody>
+          <tbody ng-if="!incomeCollapsed" table-group name="Donations" data="mvr.donations.donations" totals="mvr.donations.donationsTotal" color="mvr.colors.donations" expand="true" type="donations"></tbody>
           <tbody table-group name="Expenses" data="mvr.data.expenses" totals="mvr.data.expensesTotal" color="mvr.colors.expenses"></tbody>
           <tbody table-group name="Ending Balances" totals="mvr.data.balances" color="mvr.colors.balance" expand="false"></tbody>
         </table>

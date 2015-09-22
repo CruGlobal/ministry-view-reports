@@ -17,7 +17,9 @@
         data: '=',
         totals: '=',
         color: '=',
-        expand: '='
+        expand: '=',
+        type: '@',
+        isCollapsed: '='
       },
       bindToController: true
     };
@@ -29,6 +31,7 @@
       var vm = this;
       vm.isCollapsed = true;
       vm.expand = vm.expand === false ? vm.expand : true; //Default to true unless it is already set to false
+      vm.type = vm.type || 'transactions'; //Default to transaction unless it is already set
       vm.showMonthTransactions = showMonthTransactions;
 
       function showMonthTransactions(transactions, date, category) {
@@ -47,15 +50,19 @@
             },
             category: function(){
               return category;
+            },
+            type: function(){
+              return vm.type;
             }
           }
         });
 
-        function MonthTransactionsController(transactions, date, category, moment){
+        function MonthTransactionsController(transactions, date, category, type, moment){
           var vm = this;
           vm.transactions = transactions;
           vm.date = moment(date, 'YYYY-MM').format('x');
           vm.category = category;
+          vm.type = type;
         }
       }
     }

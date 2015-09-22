@@ -28,6 +28,7 @@
       vm.colors.income = vm.colors.income || '#3366cc';
       vm.colors.expenses = vm.colors.expenses || '#dc3912';
       vm.colors.balance = vm.colors.balance || '#ff9900';
+      vm.colors.donations = vm.colors.donations || '#00ADFF';
 
       vm.updateProfiles = updateProfiles;
       vm.updateTransactionsAndDonations = updateTransactionsAndDonations;
@@ -76,6 +77,9 @@
           incomeTotal: zeroArray,
           expensesTotal: zeroArray,
           balances: zeroArray
+        };
+        vm.donations = {
+          donationsTotal: zeroArray
         };
         vm.chartObject = visualization.getChartObject(dateRange.allDates, vm.data, vm.colors);
       }

@@ -3,7 +3,13 @@
 </div>
 <div class="modal-body">
   <div class="row">
-    <div class="col-xs-6"><h4>{{ monthTransactions.category}} <small>Transactions</small></h4></div>
+    <div class="col-xs-6">
+      <h4 ng-switch="monthTransactions.type">
+        {{ monthTransactions.category}}
+        <small ng-switch-when="transactions">Transactions</small>
+        <small ng-switch-when="donations">Gifts</small>
+      </h4>
+    </div>
     <div class="col-xs-6 text-right"><h4><small>For month of</small> {{ monthTransactions.date | date : 'MMMM yyyy' }}</h4></div>
   </div>
   <div class="row">
@@ -18,15 +24,21 @@
           </tr>
           </thead>
           <tbody>
-          <tr ng-repeat="transaction in monthTransactions.transactions">
-            <td>
+          <tr ng-repeat="transaction in monthTransactions.transactions" ng-switch="monthTransactions.type">
+            <td ng-switch-when="transactions">
               {{ transaction.transaction_date | date : shortDate }}
             </td>
-            <td>
+            <td ng-switch-when="transactions">
               {{ transaction.description }}
             </td>
-            <td>
-              {{ transaction.amount | currency }}
+            <td ng-switch-when="donations">
+              {{ transaction.gift_date | date : shortDate }}
+            </td>
+            <td ng-switch-when="donations">
+              {{ transaction.payment_method_code }}
+            </td>
+            <td class="text-right">
+              {{ transaction.amount | currency : (transaction.tendered_currency ? transaction.tendered_currency + ' ' : '') }}
             </td>
           </tr>
           </tbody>
