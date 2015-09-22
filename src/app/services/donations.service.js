@@ -6,7 +6,7 @@
     .factory('donations', donationsService);
 
   /** @ngInject */
-  function donationsService(Restangular, _, dateRange, transactionDataManipulation){
+  function donationsService(Restangular, _, dateRange, transactionsDataManipulation){
     var factory = {
       getParsedDonations: getParsedDonations,
 
@@ -34,7 +34,7 @@
     function extractData(donations){
       //add processing functions as lodash mixins so they can be used in the lodash chain
       _.mixin({
-        mainDataProcessing: transactionDataManipulation.extractData
+        mainDataProcessing: transactionsDataManipulation.extractData
       });
 
       return _(donations)

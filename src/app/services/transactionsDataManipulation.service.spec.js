@@ -1,8 +1,8 @@
 (function () {
   'use strict';
 
-  describe('service transactionDataManipulation', function () {
-    var transactionDataManipulation, dateRange, sampleStartingBalance, sampleData, processedSampleData;
+  describe('service transactionsDataManipulation', function () {
+    var transactionsDataManipulation, dateRange, sampleStartingBalance, sampleData, processedSampleData;
 
     beforeEach(module('ministryViewReports'));
     beforeEach(function(){
@@ -129,26 +129,26 @@
         "incomeTotal": [974.9399999999999, 104.03, 25.12]
       };
 
-      inject(function (_transactionDataManipulation_, _dateRange_) {
-        transactionDataManipulation = _transactionDataManipulation_;
+      inject(function (_transactionsDataManipulation_, _dateRange_) {
+        transactionsDataManipulation = _transactionsDataManipulation_;
         dateRange = _dateRange_;
       });
     });
 
     it('should be registered', function () {
-      expect(transactionDataManipulation).not.toEqual(null);
+      expect(transactionsDataManipulation).not.toEqual(null);
     });
 
     describe('extractData function', function () {
       it('should process input data and extract everything needed', function () {
 
-        expect(transactionDataManipulation.extractData(sampleData, 'gl_account_description', 'transaction_date')).toEqual(processedSampleData);
+        expect(transactionsDataManipulation.extractData(sampleData, 'gl_account_description', 'transaction_date')).toEqual(processedSampleData);
       });
     });
 
     describe('groupByCategory function', function () {
       it('should return arrays which are buckets for each category', function () {
-        expect(transactionDataManipulation._groupByCategory([
+        expect(transactionsDataManipulation._groupByCategory([
           {gl_account_description: '1st', amount: 10},
           {gl_account_description: '2nd', amount: 5},
           {gl_account_description: '1st', amount: 7},
@@ -164,7 +164,7 @@
 
     describe('groupByMonth function', function () {
       it('should return arrays which are buckets for each year/month group', function () {
-        expect(transactionDataManipulation._groupByMonth([
+        expect(transactionsDataManipulation._groupByMonth([
           {gl_account_description: '1st', amount: 10, transaction_date: "2014-12-23T00:00:00.000+00:00"},
           {gl_account_description: '1st', amount: 5, transaction_date: "2014-12-31T00:00:00.000+00:00"},
           {gl_account_description: '1st', amount: 7, transaction_date: "2015-01-02T00:00:00.000+00:00"},
@@ -182,7 +182,7 @@
 
     describe('reduceAmounts function', function () {
       it('should sum all amounts in array', function () {
-        expect(transactionDataManipulation._reduceAmounts([
+        expect(transactionsDataManipulation._reduceAmounts([
           {gl_account_description: '1st', amount: 10, "fiscal_year": "2014", "fiscal_period": "12"},
           {gl_account_description: '1st', amount: 5, "fiscal_year": "2014", "fiscal_period": "12"},
           {gl_account_description: '1st', amount: 7, "fiscal_year": "2015", "fiscal_period": "1"},
@@ -198,7 +198,7 @@
         allDates = [{code: '2015-01'}, {code: '2015-02'}, {code: '2015-03'}, {code: '2015-04'}, {code: '2015-05'}];
       });
       it('should add dates that are not already in object', function () {
-        expect(transactionDataManipulation._addMissingDates({
+        expect(transactionsDataManipulation._addMissingDates({
           "2015-01": {"sum": 85, transactions: {}},
           "2015-03": {"sum": 92, transactions: {}}
         }, allDates)).toEqual({
@@ -238,11 +238,11 @@
         ];
       });
       it('sumDates should return an array of sums for each month across categories', function () {
-        expect(transactionDataManipulation._sumDates(incomeTestData)).toEqual(incomeTotal);
+        expect(transactionsDataManipulation._sumDates(incomeTestData)).toEqual(incomeTotal);
       });
 
       it('insertSummedDates should be insert totals into main object', function () {
-        expect(transactionDataManipulation._insertSummedDates({
+        expect(transactionsDataManipulation._insertSummedDates({
           income: incomeTestData,
           expenses: incomeTestData
         })).toEqual({
@@ -256,7 +256,7 @@
 
     describe('sortKeysBy function', function () {
       it('should sort and object by keys', function () {
-        expect(transactionDataManipulation._sortKeysBy({d: 4, a: 1, c: 3, b: 2})).toEqual({a: 1, b: 2, c: 3, d: 4});
+        expect(transactionsDataManipulation._sortKeysBy({d: 4, a: 1, c: 3, b: 2})).toEqual({a: 1, b: 2, c: 3, d: 4});
       });
     });
 

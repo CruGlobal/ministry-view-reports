@@ -6,7 +6,7 @@
     .factory('transactions', transactionsService);
 
   /** @ngInject */
-  function transactionsService(Restangular, _, $q, dateRange, transactionDataManipulation){
+  function transactionsService(Restangular, _, $q, dateRange, transactionsDataManipulation){
     var factory = {
       startingBalance: 0,
       getParsedTransactions: getParsedTransactions,
@@ -90,7 +90,7 @@
       //add processing functions as lodash mixins so they can be used in the lodash chain
       _.mixin({
         groupByTransactionType: groupByTransactionType,
-        mainDataProcessing: transactionDataManipulation.extractData,
+        mainDataProcessing: transactionsDataManipulation.extractData,
         insertBalances: insertBalances
       });
 

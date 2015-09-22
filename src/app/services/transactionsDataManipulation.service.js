@@ -3,10 +3,10 @@
 
   angular
     .module('ministryViewReports')
-    .factory('transactionDataManipulation', transactionDataManipulationService);
+    .factory('transactionsDataManipulation', transactionsDataManipulationService);
 
   /** @ngInject */
-  function transactionDataManipulationService(_, moment, dateRange){
+  function transactionsDataManipulationService(_, moment, dateRange){
     var factory = {
       extractData: extractData,
       _groupByCategory: groupByCategory,
