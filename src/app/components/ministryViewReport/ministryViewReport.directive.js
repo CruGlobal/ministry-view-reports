@@ -28,7 +28,7 @@
       vm.colors.income = vm.colors.income || '#3366cc';
       vm.colors.expenses = vm.colors.expenses || '#dc3912';
       vm.colors.balance = vm.colors.balance || '#ff9900';
-      vm.colors.donations = vm.colors.donations || '#00ADFF';
+      vm.colors.donations = vm.colors.donations || '#8DC5FF';
 
       vm.updateProfiles = updateProfiles;
       vm.updateTransactionsAndDonations = updateTransactionsAndDonations;

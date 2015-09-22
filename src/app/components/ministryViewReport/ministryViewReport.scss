@@ -23,11 +23,21 @@
     }
 
     > tbody[table-group] {
+      > tr{
+        > td, > th{
+          > span{
+            padding: .2em .6em .3em; //add padding to all number cells so they are aligned the same regardless of whether they are buttons
+          }
+        }
+      }
       //First row of table group
       > tr:first-child {
         color: #FFF;
         &.expandEnabled {
           cursor: pointer;
+        }
+        > th.donationsTitle{
+          padding-left: 1.5em;
         }
       }
       //Indent sub categories
@@ -35,10 +45,12 @@
         > td:first-child {
           font-weight: 600;
           padding-left: 1.5em;
+          &.donationsSubTitle{
+            padding-left: 3em;
+          }
         }
         //Add button on hover of cell
         > td:not(:first-child) > span {
-          padding: .2em .6em .3em;
           &:hover {
             cursor: pointer;
             background-color: #36B4DA;

@@ -119,7 +119,7 @@
                   "v": _.isNumber(value) ? value.toFixed(2) : moment(value, 'MMM YY').toDate() //format as number with 2 decimal places or js date object
                 };
               })
-              .push({v: index === 11 ? 'Avg. Income: $' + col[4].toFixed(2) : null}) //add annotation to last avgIncome data point
+              .push({v: index === 11 ? 'Avg. Income: ' + col[4].toFixed(2) : null}) //add annotation to last avgIncome data point
               .value()
           };
         })

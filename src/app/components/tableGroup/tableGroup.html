@@ -1,13 +1,13 @@
 <tr ng-click="group.isCollapsed = !group.isCollapsed"  ng-class="{'expandEnabled': group.expand}" ng-style="{'background-color': group.color}">
-  <th>
+  <th ng-class="{'donationsTitle': group.type === 'donations'}">
     {{group.name}}
   </th>
   <th ng-repeat="(date, value) in group.totals track by $index">
-    {{value | number:0}}
+    <span>{{value | number:0}}</span>
   </th>
 </tr>
 <tr ng-repeat="(category, values) in group.data track by $index" ng-if="!group.isCollapsed">
-  <td>
+  <td ng-class="{'donationsSubTitle': group.type === 'donations'}">
     {{category}}
   </td>
   <td ng-repeat="(date, value) in values track by date">
