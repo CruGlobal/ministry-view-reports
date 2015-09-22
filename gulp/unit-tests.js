@@ -7,13 +7,13 @@ var conf = require('./conf');
 var karma = require('karma');
 
 function runTests (singleRun, done) {
-  karma.server.start({
+  new karma.Server({
     configFile: path.join(__dirname, '/../karma.conf.js'),
     singleRun: singleRun,
     autoWatch: !singleRun
   }, function() {
     done();
-  });
+  }).start();
 }
 
 gulp.task('test', ['scripts'], function(done) {
