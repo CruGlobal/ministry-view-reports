@@ -38,6 +38,7 @@
     "jshint-stylish": "~2.0.0",
     "karma": "^0.13.10",
     "karma-angular-filesort": "~1.0.0",
+    "karma-coverage": "^0.5.2",
     "karma-jasmine": "~0.3.5",
     "karma-mocha-reporter": "^1.1.1",
     "karma-ng-html2js-preprocessor": "~0.1.2",
