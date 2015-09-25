@@ -22,7 +22,9 @@
     /**
      * Runs transactions through functions to map, group, and reduce them for visualization
      * @param {Object} transactions
-     * @param {number} startingBalance
+     * @param {string} categoryProperty
+     * @param {string} dateProperty
+     * @param {string} secondCategoryProperty
      * @returns {Object}
      *
      * Takes transactions array and performs the following operations in order:
@@ -33,7 +35,7 @@
      * - Add missing dates
      * - Add summed dates
      */
-    function extractData(transactions, categoryProperty, dateProperty) {
+    function extractData(transactions, categoryProperty, dateProperty, secondCategoryProperty) {
       //add processing functions as lodash mixins so they can be used in the lodash chain
       _.mixin({
         groupByCategory: groupByCategory,
@@ -46,7 +48,7 @@
       return _(transactions)
         .mapValues(function(type, typeName) { // for both income, and expenses, etc buckets
           return _(type)
-            .groupByCategory(categoryProperty)
+            .groupByCategory(categoryProperty, secondCategoryProperty)
             .mapValues(function(category) { // foreach category bucket
               return _(category)
                 .groupByMonth(dateProperty)
@@ -79,10 +81,11 @@
      *   ...
      * }
      */
-    function groupByCategory(type, property) {
+    function groupByCategory(type, property, secondProperty) {
       return _(type)
         .groupBy(function (transaction) {
-          return transaction[property];
+          var secondPart = secondProperty ? '-' + transaction[secondProperty] : '';
+          return transaction[property] + secondPart;
         })
         .value();
     }

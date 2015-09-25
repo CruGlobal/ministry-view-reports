@@ -41,7 +41,7 @@
         .thru(function(donations){
           return {donations: donations};
         })
-        .mainDataProcessing('donor_name', 'gift_date')
+        .mainDataProcessing('donor_name', 'gift_date', 'donor_code')
         .value();
     }
 

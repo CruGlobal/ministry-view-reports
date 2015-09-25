@@ -7,8 +7,12 @@
   </th>
 </tr>
 <tr ng-repeat="(category, values) in group.data track by $index" ng-if="!group.isCollapsed">
-  <td ng-class="{'donationsSubTitle': group.type === 'donations'}">
-    {{category}}
+  <td ng-class="{'donationsSubTitle': group.type === 'donations'}" ng-switch="group.type">
+    <span ng-switch-when="donations">
+      {{category.split('-')[0]}}
+      <span class="small-subtle">{{category.split('-')[1]}}</span>
+    </span>
+    <span ng-switch-default>{{category}}</span>
   </td>
   <td ng-repeat="(date, value) in values track by date">
     <span ng-click="group.showMonthTransactions(value.transactions, date, category); $event.stopPropagation();">{{value.sum | number:0}}</span>

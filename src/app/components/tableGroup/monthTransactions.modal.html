@@ -5,9 +5,15 @@
   <div class="row">
     <div class="col-xs-6">
       <h4 ng-switch="monthTransactions.type">
-        {{ monthTransactions.category}}
-        <small ng-switch-when="transactions">Transactions</small>
-        <small ng-switch-when="donations">Gifts</small>
+        <span ng-switch-when="donations">
+          <div>
+            {{monthTransactions.category.split('-')[0]}} <small>Gifts</small>
+          </div>
+          <h5>
+            Account <small>{{monthTransactions.category.split('-')[1]}}</small>
+          </h5>
+        </span>
+        <span ng-switch-default>{{monthTransactions.category}} <small>Transactions</small></span>
       </h4>
     </div>
     <div class="col-xs-6 text-right"><h4><small>For month of</small> {{ monthTransactions.date | date : 'MMMM yyyy' }}</h4></div>
