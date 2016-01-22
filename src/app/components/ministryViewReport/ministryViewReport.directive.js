@@ -64,7 +64,7 @@
           });
         donations.getParsedDonations(vm.country, vm.profile, vm.account).then(function (loadedDonations) {
             vm.donations = loadedDonations;
-            console.log('LoadedDonationTransactions:', vm.donations);
+            // console.log('LoadedDonationTransactions:', vm.donations);
           },
           function (reason) {
             $log.error(reason);

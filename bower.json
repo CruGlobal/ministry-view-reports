@@ -11,7 +11,8 @@
     "lodash": "~3.10.1",
     "moment": "~2.10.6",
     "moment-range": "~2.0.3",
-    "restangular": "~1.5.1"
+    "restangular": "~1.5.1",
+    "angular-cas-auth-api": "https://github.com/CruGlobal/angular-cas-auth-api.git#staging"
   },
   "devDependencies": {
     "jquery": "~2.1.4",

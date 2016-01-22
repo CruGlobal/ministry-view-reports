@@ -7,7 +7,8 @@
       'ngTouch',
       'ui.bootstrap',
       'googlechart',
-      'restangular'
+      'restangular',
+      'cas-auth-api'
     ]);
 
 })();

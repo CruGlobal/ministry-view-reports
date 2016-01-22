@@ -10,6 +10,7 @@
   "validthis": true,
   "jasmine": true,
   "globals": {
+    "window": false,
     "angular": false,
     "inject": false,
     "module": false

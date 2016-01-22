@@ -6,8 +6,10 @@
     .run(runBlock);
 
   /** @ngInject */
-  function runBlock() {
-
+  function runBlock(casAuthApi) {
+    var settings = window.MinistryViewApp.config;
+    // Register managed API with casAuthApi
+    casAuthApi.addManagedApi( settings.api.ministryView );
   }
 
 })();
