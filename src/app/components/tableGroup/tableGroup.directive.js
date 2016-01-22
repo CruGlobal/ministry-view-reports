@@ -17,9 +17,9 @@
         data: '=',
         totals: '=',
         color: '=',
-        expand: '=',
+        expand: '=?',
         type: '@',
-        isCollapsed: '='
+        isCollapsed: '=?'
       },
       bindToController: true
     };
