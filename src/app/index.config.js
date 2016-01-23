@@ -16,6 +16,7 @@
     casAuthApiProvider
         .setRequireAccessToken( true )
         .setCacheAccessToken( true )
+        .setErrorCallback( settings.errorCallback )
         .setAuthenticationApiBaseUrl( settings.api.casAuthApi )
         .setTicketUrl(settings.api.refresh);
   }
