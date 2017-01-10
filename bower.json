@@ -12,7 +12,7 @@
     "moment": "~2.10.6",
     "moment-range": "~2.0.3",
     "restangular": "~1.5.1",
-    "angular-cas-auth-api": "https://github.com/CruGlobal/angular-cas-auth-api.git#staging"
+    "angular-cas-auth-api": "https://github.com/CruGlobal/angular-cas-auth-api.git#8a2d59803038eae07dafbd97fcae07dd77fd694f"
   },
   "devDependencies": {
     "jquery": "~2.1.4",
